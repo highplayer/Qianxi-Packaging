@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   // https://docs.astro.build/en/guides/images/#authorizing-remote-images
-  site: 'https://asaberui1.github.io',
+  site: 'https://highplayer.github.io',
   base: '/Qianxi-Packaging',
   image: {
     domains: ['images.unsplash.com'],
