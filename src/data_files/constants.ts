@@ -7,7 +7,7 @@ export const SITE = {
     'Chengdu Qianxi Packaging Materials Co., Ltd. — Factory-direct custom corrugated boxes. 3-layer, 5-layer, heavy-duty, and custom printed packaging solutions with global shipping.',
   description_short:
     'Factory-direct custom corrugated boxes from China. ISO certified, free sampling, 24/7 support.',
-  url: 'https://highplayer.github.io',
+  url: 'https://qianxipack.com',
   author: 'Whereby',
 };
 
