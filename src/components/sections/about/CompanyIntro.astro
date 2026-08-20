@@ -1,5 +1,6 @@
 ---
-import ImagePlaceholder from '@components/ImagePlaceholder.astro';
+import { Image } from 'astro:assets';
+import companyIntroImg from '@images/CompanyIntro.png';
 import type { SiteTranslations } from '@/i18n/types';
 const { t, lang = 'en' } = Astro.props;
 interface Props { t: SiteTranslations; lang?: string; }
@@ -32,7 +33,12 @@ const isZh = lang === 'zh';
           </div>
         </div>
       </div>
-      <ImagePlaceholder label={isZh ? '[工厂外观照片]' : '[Factory exterior photo]'} height="h-80" />
+      <Image
+        src={companyIntroImg}
+        alt={isZh ? '成都芊西包装材料有限公司工厂外观' : 'Qianxi Packaging factory exterior'}
+        class="h-80 w-full rounded-xl object-cover"
+        format="avif"
+      />
     </div>
 
     <!-- Factory Details: Production Layout + Equipment -->
