@@ -54,9 +54,9 @@ export interface SiteTranslations {
     title: string;
     introHeading: string;
     introText: string;
-    yearsExperience: string;
-    exportCountries: string;
-    annualCapacity: string;
+    introHighlight1: string;
+    introHighlight2: string;
+    introHighlight3: string;
     galleryTitle: string;
     workshopLabel: string;
     warehouseLabel: string;
@@ -117,6 +117,12 @@ export interface SiteTranslations {
     printLabel: string;
     printNone: string;
     printFlexo: string;
+    budgetLabel: string;
+    budgetPlaceholder: string;
+    shippingLabel: string;
+    shippingNeed: string;
+    shippingOwnForwarder: string;
+    shippingNote: string;
     messageLabel: string;
     messagePlaceholder: string;
     recaptchaNotice: string;
@@ -126,7 +132,6 @@ export interface SiteTranslations {
     sidebarWhy2: string;
     sidebarWhy3: string;
     sidebarWhy4: string;
-    sidebarWhy5: string;
     contactInfo: string;
     addressLabel: string;
     emailLabel2: string;

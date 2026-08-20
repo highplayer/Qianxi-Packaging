@@ -80,6 +80,13 @@ interface Props { t: SiteTranslations; }
       </div>
     </div>
 
+    <!-- Budget -->
+    <div>
+      <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.budgetLabel}</label>
+      <input type="text" name="budget" placeholder={t.contact.budgetPlaceholder}
+        class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" />
+    </div>
+
     <!-- Printing -->
     <fieldset>
       <legend class="mb-2 text-xs font-semibold text-gray-700">{t.contact.printLabel}</legend>
@@ -87,6 +94,16 @@ interface Props { t: SiteTranslations; }
         <label class="flex items-center gap-2 text-sm"><input type="radio" name="printing" value="none" checked class="text-accent-600 focus:ring-accent-500" /> {t.contact.printNone}</label>
         <label class="flex items-center gap-2 text-sm"><input type="radio" name="printing" value="flexo" class="text-accent-600 focus:ring-accent-500" /> {t.contact.printFlexo}</label>
       </div>
+    </fieldset>
+
+    <!-- Shipping -->
+    <fieldset>
+      <legend class="mb-2 text-xs font-semibold text-gray-700">{t.contact.shippingLabel}</legend>
+      <div class="flex flex-wrap gap-4">
+        <label class="flex items-center gap-2 text-sm"><input type="radio" name="shipping" value="need" class="text-accent-600 focus:ring-accent-500" /> {t.contact.shippingNeed}</label>
+        <label class="flex items-center gap-2 text-sm"><input type="radio" name="shipping" value="own-forwarder" class="text-accent-600 focus:ring-accent-500" /> {t.contact.shippingOwnForwarder}</label>
+      </div>
+      <p class="mt-2 text-xs text-gray-500">{t.contact.shippingNote}</p>
     </fieldset>
 
     <!-- Message -->
