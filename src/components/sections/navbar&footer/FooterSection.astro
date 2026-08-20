@@ -59,8 +59,9 @@ const prefix = lang === 'zh' ? '/zh' : '';
       <div>
         <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider text-accent-400" style="font-family: var(--font-heading);">{t.footer.support}</h4>
         <ul class="space-y-2">
-          <li><a href={`${base}${prefix}/#faq`} class="text-sm text-gray-300 hover:text-white transition">FAQ</a></li>
+          <li><a href={`${base}${prefix}/quote`} class="text-sm text-gray-300 hover:text-white transition">{t.nav.getQuote}</a></li>
           <li><a href={`${base}${prefix}/contact`} class="text-sm text-gray-300 hover:text-white transition">{t.nav.contact}</a></li>
+          <li><a href={`${base}${prefix}/#faq`} class="text-sm text-gray-300 hover:text-white transition">FAQ</a></li>
         </ul>
       </div>
     </div>

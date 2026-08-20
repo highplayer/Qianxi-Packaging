@@ -68,12 +68,15 @@ interface Props { t: SiteTranslations; }
       </div>
       <div>
         <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.quantityLabel}</label>
-        <select name="quantity" class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500">
+        <select name="quantity" id="quantity-select" class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500">
           <option value="500">{t.contact.qty500}</option>
           <option value="1000">{t.contact.qty1000}</option>
           <option value="5000">{t.contact.qty5000}</option>
           <option value="10000+">{t.contact.qty10000}</option>
+          <option value="custom">{t.contact.qtyCustom}</option>
         </select>
+        <input type="number" name="customQuantity" id="custom-quantity-input" min="1" placeholder={t.contact.qtyCustom}
+          class="mt-2 hidden w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" />
       </div>
     </div>
 
@@ -83,7 +86,6 @@ interface Props { t: SiteTranslations; }
       <div class="flex flex-wrap gap-4">
         <label class="flex items-center gap-2 text-sm"><input type="radio" name="printing" value="none" checked class="text-accent-600 focus:ring-accent-500" /> {t.contact.printNone}</label>
         <label class="flex items-center gap-2 text-sm"><input type="radio" name="printing" value="flexo" class="text-accent-600 focus:ring-accent-500" /> {t.contact.printFlexo}</label>
-        <label class="flex items-center gap-2 text-sm"><input type="radio" name="printing" value="offset" class="text-accent-600 focus:ring-accent-500" /> {t.contact.printOffset}</label>
       </div>
     </fieldset>
 
@@ -118,6 +120,15 @@ interface Props { t: SiteTranslations; }
   const form = document.getElementById('inquiry-form') as HTMLFormElement;
   const successEl = document.getElementById('form-success')!;
   const errorEl = document.getElementById('form-error')!;
+
+  // Show custom quantity input when "custom" is selected
+  const qtySelect = document.getElementById('quantity-select') as HTMLSelectElement;
+  const customQtyInput = document.getElementById('custom-quantity-input') as HTMLInputElement;
+  qtySelect.addEventListener('change', () => {
+    const isCustom = qtySelect.value === 'custom';
+    customQtyInput.classList.toggle('hidden', !isCustom);
+    if (isCustom) customQtyInput.focus();
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

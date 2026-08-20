@@ -1,0 +1,70 @@
+---
+import { COMPANY } from '@/data_files/constants';
+import Icon from '@components/ui/icons/Icon.astro';
+import FooterSocialLink from '@components/ui/links/FooterSocialLink.astro';
+import type { SiteTranslations } from '@/i18n/types';
+
+const { t, lang = 'en' } = Astro.props;
+interface Props {
+  t: SiteTranslations;
+  lang?: string;
+}
+const address = lang === 'zh' ? COMPANY.address.zh : COMPANY.address.en;
+
+const socialLinks = [
+  { icon: 'facebookFooter', url: 'https://www.facebook.com/' },
+  { icon: 'xFooter', url: 'https://twitter.com/' },
+  { icon: 'instagram', url: 'https://www.instagram.com/' },
+  { icon: 'linkedIn', url: 'https://www.linkedin.com/' },
+];
+---
+
+<div class="mx-auto max-w-4xl">
+  <!-- Contact Information -->
+  <div class="rounded-2xl border border-gray-200 bg-white p-10">
+    <h2 class="mb-8 text-xl font-bold text-primary-900" style="font-family: var(--font-heading);">
+      {t.contact.contactInfo}
+    </h2>
+    <div class="space-y-6">
+      <div class="flex items-start gap-4">
+        <Icon name="envelopeOpen" class="mt-0.5 h-6 w-6 shrink-0 text-accent-600" />
+        <div>
+          <p class="font-semibold text-gray-700">{t.contact.emailLabel2}</p>
+          <a href={`mailto:${COMPANY.email}`} class="break-all text-gray-600 hover:text-accent-600">{COMPANY.email}</a>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <Icon name="chatBubble" class="mt-0.5 h-6 w-6 shrink-0 text-accent-600" />
+        <div>
+          <p class="font-semibold text-gray-700">{t.contact.phoneLabel2}</p>
+          <p class="text-gray-600">{COMPANY.phone}</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <Icon name="chatBubble" class="mt-0.5 h-6 w-6 shrink-0 text-accent-600" />
+        <div>
+          <p class="font-semibold text-gray-700">{t.contact.whatsappLabel}</p>
+          <p class="text-gray-600">{COMPANY.whatsapp}</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <Icon name="mapPin" class="mt-0.5 h-6 w-6 shrink-0 text-accent-600" />
+        <div>
+          <p class="font-semibold text-gray-700">{t.contact.addressLabel}</p>
+          <p class="text-gray-600">{address}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Accounts -->
+  <div class="mt-8 rounded-2xl border border-gray-200 bg-white p-10 text-center">
+    <h2 class="mb-2 text-xl font-bold text-primary-900" style="font-family: var(--font-heading);">
+      {t.contactPage.socialTitle}
+    </h2>
+    <p class="mb-6 text-sm text-gray-600">{t.contactPage.socialDesc}</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      {socialLinks.map(link => <FooterSocialLink url={link.url} icon={link.icon} />)}
+    </div>
+  </div>
+</div>

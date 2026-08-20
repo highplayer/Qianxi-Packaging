@@ -1,0 +1,26 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import InquiryForm from '@components/sections/contact/InquiryForm.astro';
+import ContactSidebar from '@components/sections/contact/ContactSidebar.astro';
+import { getTranslations } from '@/i18n/utils';
+
+const t = getTranslations('en');
+---
+
+<MainLayout>
+  <section class="py-20">
+    <div class="mx-auto max-w-7xl px-4">
+      <h1 class="mb-12 text-center text-4xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
+        {t.contact.title}
+      </h1>
+      <div class="grid gap-8 lg:grid-cols-3">
+        <div class="lg:col-span-2">
+          <InquiryForm t={t} />
+        </div>
+        <div>
+          <ContactSidebar t={t} />
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

@@ -113,10 +113,10 @@ export interface SiteTranslations {
     qty1000: string;
     qty5000: string;
     qty10000: string;
+    qtyCustom: string;
     printLabel: string;
     printNone: string;
     printFlexo: string;
-    printOffset: string;
     messageLabel: string;
     messagePlaceholder: string;
     recaptchaNotice: string;
@@ -135,6 +135,12 @@ export interface SiteTranslations {
     successTitle: string;
     successMessage: string;
     errorMessage: string;
+  };
+  contactPage: {
+    title: string;
+    subtitle: string;
+    socialTitle: string;
+    socialDesc: string;
   };
   langSwitch: string;
 }

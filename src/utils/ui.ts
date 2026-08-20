@@ -1,4 +1,4 @@
 export const languages = {
   en: 'English',
-  fr: 'Français',
+  zh: '中文',
 };
