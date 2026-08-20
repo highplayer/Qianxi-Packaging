@@ -3,6 +3,7 @@
 import Meta from '@components/Meta.astro';
 import Navbar from '@components/sections/navbar&footer/Navbar.astro';
 import FooterSection from '@components/sections/navbar&footer/FooterSection.astro';
+import ModificationNotes from '@components/ModificationNotes.astro';
 import { SITE } from '@data/constants';
 import { getTranslations } from '@/i18n/utils';
 import type { Locale } from '@/i18n/utils';
@@ -72,6 +73,7 @@ interface Props {
       </main>
     </div>
     <FooterSection t={t} lang={lang} />
+    <ModificationNotes />
     <script>
       // https://preline.co
       import 'preline';
