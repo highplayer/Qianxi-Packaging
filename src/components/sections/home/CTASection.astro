@@ -9,6 +9,9 @@ interface Props { t: SiteTranslations; }
     <h2 class="mb-4 text-3xl font-extrabold" style="font-family: var(--font-heading);">{t.home.ctaTitle}</h2>
     <p class="mb-8 text-gray-300">{t.home.ctaSubtitle}</p>
     <form id="homepage-cta-form" class="mx-auto flex max-w-xl flex-wrap justify-center gap-3">
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </div>
       <input type="email" name="email" required placeholder={t.home.ctaEmailPlaceholder}
         class="flex-1 min-w-[200px] rounded-lg border-0 px-4 py-3 text-gray-900" />
       <input type="text" name="name" placeholder={t.home.ctaNamePlaceholder}

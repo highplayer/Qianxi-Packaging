@@ -1,0 +1,10 @@
+# Cloudflare Worker 部署配置
+# 用途：接收网站询盘表单并转发邮件（配合 Resend）
+name = "qianxi-inquiry"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+# 注意：不要把 RESEND_API_KEY / TO_EMAIL 写在这里提交到 git！
+# 部署后用以下任一方式设置秘密变量：
+#   1) Cloudflare 控制台 → Workers & Pages → qianxi-inquiry → Settings → Variables and Secrets
+#   2) 命令行：wrangler secret put RESEND_API_KEY

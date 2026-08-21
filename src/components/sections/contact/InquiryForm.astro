@@ -8,6 +8,10 @@ interface Props { t: SiteTranslations; }
   <p class="mb-6 text-sm text-gray-600">{t.contact.formSubtitle}</p>
 
   <form id="inquiry-form" class="space-y-5" novalidate>
+    <!-- Honeypot: hidden from humans, filled by bots -->
+    <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+    </div>
     <!-- Name -->
     <div>
       <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.nameLabel}</label>
