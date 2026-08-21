@@ -1,18 +1,23 @@
 /**
- * Qianxi Packaging — 询盘后台（Cloudflare Worker）
+ * Qianxi Packaging — 询盘后台（Cloudflare Worker + KV 存储版）
  *
- * 作用：接收网站表单的 POST → 校验 + Honeypot 防垃圾 → 通过 Resend 把询盘发到你的邮箱。
+ * 作用：接收网站表单 POST → 校验 + Honeypot 防垃圾 → 存入 Cloudflare KV。
+ *       你可以随时用浏览器打开 GET /submissions 手动查看/复制全部 JSON 数据。
  *
- * 部署后在 Cloudflare 控制台（Worker → Settings → Variables and Secrets）设置两个秘密变量：
- *   RESEND_API_KEY : Resend 的 API key（re_xxx，在 https://resend.com/api-keys 获取）
- *   TO_EMAIL       : 接收询盘的邮箱，例如 sales@qianxipackaging.com
- * 可选变量：
- *   FROM_EMAIL     : 发件人地址（需在 Resend 验证过你的域名），默认 noreply@qianxipack.com
+ * 需要准备：
+ *   1) 在 Cloudflare 创建一个 KV namespace（Workers & Pages → KV → Create）
+ *   2) 绑定到本 Worker（Settings → Bindings → KV namespace → 绑定名必须叫 INQUIRIES）
+ *   3) （推荐）在 Variables and Secrets 里设置 ACCESS_KEY 作为访问口令
+ *
+ * 用法：
+ *   - 网站表单提交 → POST https://你的worker.workers.dev/
+ *   - 手动查看数据 → GET  https://你的worker.workers.dev/submissions?key=你的ACCESS_KEY
+ *   - 清空数据     → GET  https://你的worker.workers.dev/clear?key=你的ACCESS_KEY
  */
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
@@ -23,28 +28,52 @@ function json(data, status = 200) {
   });
 }
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+function isAuthorized(request, env) {
+  // 如果没设置 ACCESS_KEY，则允许任何人访问；设置了则必须带 ?key=...
+  if (!env.ACCESS_KEY) return true;
+  const url = new URL(request.url);
+  return url.searchParams.get('key') === env.ACCESS_KEY;
 }
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
+
+    // —— 手动拉取全部询盘（JSON）——
+    if (request.method === 'GET' && url.pathname === '/submissions') {
+      if (!isAuthorized(request, env)) return json({ error: 'Forbidden' }, 403);
+      const list = await env.INQUIRIES.list({ prefix: 'sub:' });
+      const items = [];
+      for (const key of list.keys) {
+        const value = await env.INQUIRIES.get(key.name, 'json');
+        if (value) items.push(value);
+      }
+      items.sort((a, b) => String(b.ts).localeCompare(String(a.ts)));
+      return json({ count: items.length, submissions: items });
+    }
+
+    // —— 清空全部询盘 ——
+    if (request.method === 'GET' && url.pathname === '/clear') {
+      if (!isAuthorized(request, env)) return json({ error: 'Forbidden' }, 403);
+      const list = await env.INQUIRIES.list({ prefix: 'sub:' });
+      await Promise.all(list.keys.map((k) => env.INQUIRIES.delete(k.name)));
+      return json({ ok: true, cleared: list.keys.length });
+    }
+
     if (request.method !== 'POST') {
       return new Response('Method Not Allowed', { status: 405, headers: CORS_HEADERS });
     }
 
+    // —— 接收网站表单提交 ——
     try {
       const formData = await request.formData();
       const field = (name) => (formData.get(name) || '').toString().trim();
 
-      // 1) Honeypot：真人看不到这个隐藏字段，机器人会自动填。填了就静默丢弃。
+      // Honeypot：真人看不到，机器人会填。填了就静默丢弃。
       if (field('_gotcha')) {
         return json({ ok: true });
       }
@@ -63,64 +92,27 @@ export default {
       const shipping = field('shipping');
       const message = field('message') || field('requirements');
 
-      // 2) 校验必填项
-      if (!name || !email) {
-        return json({ error: 'Missing required fields' }, 400);
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return json({ error: 'Invalid email' }, 400);
-      }
+      // 校验必填项
+      if (!name || !email) return json({ error: 'Missing required fields' }, 400);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: 'Invalid email' }, 400);
 
-      const qty = quantity === 'custom' ? customQuantity || 'Custom' : quantity;
-      const size = [length, width, height].filter(Boolean).join(' × ');
+      const submission = {
+        ts: new Date().toISOString(),
+        name,
+        email,
+        phone,
+        size: [length, width, height].filter(Boolean).join(' × '),
+        material,
+        quantity: quantity === 'custom' ? customQuantity || 'Custom' : quantity,
+        printing,
+        budget,
+        shipping,
+        message,
+      };
 
-      // 3) 组装邮件正文
-      const rows = [
-        ['姓名 Name', name],
-        ['邮箱 Email', email],
-        ['电话 Phone', phone || '-'],
-        ['尺寸 Size (mm)', size || '-'],
-        ['材质 Material', material || '-'],
-        ['数量 Quantity', qty || '-'],
-        ['印刷 Printing', printing || '-'],
-        ['预算 Budget', budget || '-'],
-        ['运输 Shipping', shipping || '-'],
-        ['留言 Message', message || '-'],
-      ]
-        .map(
-          ([label, value]) =>
-            `<tr><td style="padding:6px 12px;border:1px solid #e5e7eb;font-weight:600;color:#374151;white-space:nowrap;">${label}</td><td style="padding:6px 12px;border:1px solid #e5e7eb;color:#111827;">${escapeHtml(value)}</td></tr>`
-        )
-        .join('');
-
-      const html = `
-        <div style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:640px;margin:0 auto;">
-          <h2 style="color:#1e3a5f;margin:0 0 12px;">网站新询盘 Website Inquiry</h2>
-          <table style="border-collapse:collapse;width:100%;font-size:14px;">${rows}</table>
-          <p style="color:#9ca3af;font-size:12px;margin-top:16px;">来自 qianxipack.com 网站表单 · ${new Date().toISOString()}</p>
-        </div>`;
-
-      // 4) 通过 Resend 发送邮件
-      const resendRes = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: `Qianxi Packaging <${env.FROM_EMAIL || 'noreply@qianxipack.com'}>`,
-          to: [env.TO_EMAIL],
-          reply_to: email,
-          subject: `[网站询盘] ${name} — ${email}`,
-          html,
-        }),
-      });
-
-      if (resendRes.ok) {
-        return json({ ok: true });
-      }
-      console.error('Resend error:', await resendRes.text());
-      return json({ error: 'Failed to send email' }, 502);
+      const key = `sub:${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      await env.INQUIRIES.put(key, JSON.stringify(submission));
+      return json({ ok: true });
     } catch (err) {
       console.error('Worker error:', err);
       return json({ error: 'Server error' }, 500);

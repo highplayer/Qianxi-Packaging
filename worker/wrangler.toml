@@ -1,10 +1,16 @@
 # Cloudflare Worker 部署配置
-# 用途：接收网站询盘表单并转发邮件（配合 Resend）
+# 用途：接收网站询盘表单并存入 KV（手动查看 JSON）
 name = "qianxi-inquiry"
 main = "index.js"
 compatibility_date = "2025-01-01"
 
-# 注意：不要把 RESEND_API_KEY / TO_EMAIL 写在这里提交到 git！
-# 部署后用以下任一方式设置秘密变量：
-#   1) Cloudflare 控制台 → Workers & Pages → qianxi-inquiry → Settings → Variables and Secrets
-#   2) 命令行：wrangler secret put RESEND_API_KEY
+# 需要绑定一个 KV namespace，绑定名必须叫 INQUIRIES。
+# 方式 A（网页控制台部署）：Worker → Settings → Bindings → KV namespace → 选你创建的 namespace，变量名填 INQUIRIES
+# 方式 B（wrangler CLI 部署）：先创建 namespace 拿到 id，取消下面两行注释并填上 id：
+# [[kv_namespaces]]
+# binding = "INQUIRIES"
+# id = "把你的KV-namespace-id填这里"
+
+# 安全提醒：不要把 ACCESS_KEY 等秘密写在这里提交到 git。
+# 部署后到 Worker → Settings → Variables and Secrets 添加：
+#   ACCESS_KEY = "你自己定的一串访问口令"
