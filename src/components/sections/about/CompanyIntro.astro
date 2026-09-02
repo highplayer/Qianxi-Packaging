@@ -20,11 +20,11 @@ const equipmentPhotos = Object.entries(equipmentModules)
   .map(([, img]) => img);
 
 // Precompute optimized versions (small thumbs + large mains) so we don't load 2MB PNGs
-const equipmentMains: ImageMetadata[] = [];
-const equipmentThumbs: ImageMetadata[] = [];
+const equipmentMains: string[] = [];
+const equipmentThumbs: string[] = [];
 for (const img of equipmentPhotos) {
-  equipmentThumbs.push(await getImage({ src: img, width: 160, format: 'avif', quality: 65 }));
-  equipmentMains.push(await getImage({ src: img, width: 1000, format: 'avif', quality: 80 }));
+  equipmentThumbs.push((await getImage({ src: img, width: 160, format: 'avif', quality: 65 })).src);
+  equipmentMains.push((await getImage({ src: img, width: 1000, format: 'avif', quality: 80 })).src);
 }
 ---
 
@@ -117,23 +117,23 @@ for (const img of equipmentPhotos) {
               </p>
               <img
                 id="equipment-main-img"
-                src={equipmentMains[0].src}
+                src={equipmentMains[0]}
                 alt={isZh ? '高速四色印刷模切开槽机' : 'High-Speed 4-Color Printer Slotter'}
                 class="h-52 w-full rounded-lg object-cover"
                 loading="lazy"
               />
               {equipmentPhotos.length > 1 && (
                 <div class="mt-2 flex gap-2">
-                  {equipmentPhotos.map((photo, i) => (
+                  {equipmentPhotos.map((_, i) => (
                     <button
                       type="button"
                       class={`equipment-thumb flex-1 overflow-hidden rounded-md border-2 transition hover:opacity-80 ${
                         i === 0 ? 'border-accent-600' : 'border-transparent'
                       }`}
-                      data-src={equipmentMains[i].src}
+                      data-src={equipmentMains[i]}
                       aria-label={isZh ? `查看第 ${i + 1} 张照片` : `View photo ${i + 1}`}
                     >
-                      <img src={equipmentThumbs[i].src} alt="" class="h-14 w-full object-cover" loading="lazy" />
+                      <img src={equipmentThumbs[i]} alt="" class="h-14 w-full object-cover" loading="lazy" />
                     </button>
                   ))}
                 </div>
