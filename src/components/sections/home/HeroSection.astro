@@ -1,7 +1,8 @@
 ---
-import ImagePlaceholder from '@components/ImagePlaceholder.astro';
+import { Image } from 'astro:assets';
 import Icon from '@components/ui/icons/Icon.astro';
 import type { SiteTranslations } from '@/i18n/types';
+import factoryHeroImg from '@images/CompanyIntro.png';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const { t, lang = 'en' } = Astro.props;
@@ -10,8 +11,9 @@ const prefix = lang === 'zh' ? '/zh' : '';
 ---
 
 <section class="relative overflow-hidden rounded-3xl bg-primary-900 py-20 text-white md:py-32">
-  <div class="absolute inset-0 opacity-20">
-    <ImagePlaceholder label="[Factory hero image — modern corrugated production line, well-lit, clean industrial setting]" height="h-full" />
+  <div class="absolute inset-0">
+    <Image src={factoryHeroImg} alt="" width={1600} format="avif" class="h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-primary-900/65"></div>
   </div>
   <div class="relative z-10 mx-auto max-w-3xl px-4 text-center">
     <h1 class="mb-4 text-4xl font-extrabold leading-tight md:text-5xl" style="font-family: var(--font-heading);">
