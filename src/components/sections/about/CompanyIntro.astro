@@ -1,31 +1,13 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import companyIntroImg from '@images/CompanyIntro.png';
+import EquipmentGallery from '@components/sections/about/EquipmentGallery.astro';
 import type { SiteTranslations } from '@/i18n/types';
-import type { ImageMetadata } from 'astro';
 const { t, lang = 'en' } = Astro.props;
 interface Props { t: SiteTranslations; lang?: string; }
 const isZh = lang === 'zh';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const prefix = lang === 'zh' ? '/zh' : '';
-
-// Auto-scan machine photos dropped into src/images/equipment/
-// (files are sorted by name; the first one shows as the main image)
-const equipmentModules = import.meta.glob('/src/images/equipment/printer-slotter/*.{jpg,jpeg,png,avif,webp}', {
-  eager: true,
-  import: 'default',
-}) as unknown as Record<string, ImageMetadata>;
-const equipmentPhotos = Object.entries(equipmentModules)
-  .sort((a, b) => a[0].localeCompare(b[0]))
-  .map(([, img]) => img);
-
-// Precompute optimized versions (small thumbs + large mains) so we don't load 2MB PNGs
-const equipmentMains: string[] = [];
-const equipmentThumbs: string[] = [];
-for (const img of equipmentPhotos) {
-  equipmentThumbs.push((await getImage({ src: img, width: 160, format: 'avif', quality: 65 })).src);
-  equipmentMains.push((await getImage({ src: img, width: 1000, format: 'avif', quality: 80 })).src);
-}
 ---
 
 <section class="py-20">
@@ -108,38 +90,16 @@ for (const img of equipmentPhotos) {
           <h3 class="mb-4 text-xl font-bold text-primary-800" style="font-family: var(--font-heading);">
             {isZh ? '主要生产设备' : 'Main Equipment'}
           </h3>
-          {equipmentPhotos.length > 0 && (
-            <div class="mb-6">
-              <p class="mb-2 text-xs font-medium text-gray-500">
-                {isZh
-                  ? '高速四色印刷模切开槽机（1228型）实拍'
-                  : 'High-Speed 4-Color Printer Slotter (Model 1228) — Live Photos'}
-              </p>
-              <img
-                id="equipment-main-img"
-                src={equipmentMains[0]}
-                alt={isZh ? '高速四色印刷模切开槽机' : 'High-Speed 4-Color Printer Slotter'}
-                class="h-52 w-full rounded-lg object-cover"
-                loading="lazy"
-              />
-              {equipmentPhotos.length > 1 && (
-                <div class="mt-2 flex gap-2">
-                  {equipmentPhotos.map((_, i) => (
-                    <button
-                      type="button"
-                      class={`equipment-thumb flex-1 overflow-hidden rounded-md border-2 transition hover:opacity-80 ${
-                        i === 0 ? 'border-accent-600' : 'border-transparent'
-                      }`}
-                      data-src={equipmentMains[i]}
-                      aria-label={isZh ? `查看第 ${i + 1} 张照片` : `View photo ${i + 1}`}
-                    >
-                      <img src={equipmentThumbs[i]} alt="" class="h-14 w-full object-cover" loading="lazy" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+          <EquipmentGallery
+            folder="printer-slotter"
+            title={isZh ? '高速四色印刷模切开槽机（1228型）实拍' : 'High-Speed 4-Color Printer Slotter (Model 1228) — Live Photos'}
+            isZh={isZh}
+          />
+          <EquipmentGallery
+            folder="gluer-stitcher"
+            title={isZh ? '全自动粘钉一体机（2800型）实拍 · 糊盒钉箱流水线' : 'Auto Gluer-Stitcher (Model 2800) — Folding & Stitching Line'}
+            isZh={isZh}
+          />
           <div class="space-y-3 text-sm">
             {[
               { zh: '高速四色印刷模切开槽机（1228型）× 1', en: 'High-Speed 4-Color Printer Slotter (Model 1228) × 1' },
@@ -199,16 +159,21 @@ for (const img of equipmentPhotos) {
 </section>
 
 <script>
-  // Click a thumbnail to swap the main machine photo
-  const mainImg = document.getElementById('equipment-main-img') as HTMLImageElement | null;
-  const thumbs = document.querySelectorAll<HTMLButtonElement>('.equipment-thumb');
+  // Click a thumbnail to swap the main photo within its own gallery (scoped by data-folder)
+  const thumbs = document.querySelectorAll<HTMLButtonElement>('.eq-thumb');
   thumbs.forEach((thumb) => {
     thumb.addEventListener('click', () => {
+      const folder = thumb.getAttribute('data-folder');
       const src = thumb.getAttribute('data-src');
+      const mainImg = folder
+        ? (document.getElementById(`eq-main-${folder}`) as HTMLImageElement | null)
+        : null;
       if (src && mainImg) mainImg.src = src;
       thumbs.forEach((t) => {
-        t.classList.remove('border-accent-600');
-        t.classList.add('border-transparent');
+        if (t.getAttribute('data-folder') === folder) {
+          t.classList.remove('border-accent-600');
+          t.classList.add('border-transparent');
+        }
       });
       thumb.classList.remove('border-transparent');
       thumb.classList.add('border-accent-600');

@@ -1,0 +1,63 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  folder: string; // subfolder under src/images/equipment, e.g. "printer-slotter", "gluer-stitcher"
+  title: string;  // caption shown above the gallery
+  isZh: boolean;
+}
+
+const { folder, title, isZh } = Astro.props;
+
+// Scan all machine subfolders, then keep only the ones belonging to this gallery.
+const modules = import.meta.glob('/src/images/equipment/**/*.{jpg,jpeg,png,avif,webp}', {
+  eager: true,
+  import: 'default',
+}) as unknown as Record<string, ImageMetadata>;
+
+const photos = Object.entries(modules)
+  .filter(([path]) => path.includes(`/equipment/${folder}/`))
+  .sort((a, b) => a[0].localeCompare(b[0]))
+  .map(([, img]) => img);
+
+// Precompute optimized versions (small thumbs + large mains)
+const mains: string[] = [];
+const thumbs: string[] = [];
+for (const img of photos) {
+  thumbs.push((await getImage({ src: img, width: 160, format: 'avif', quality: 65 })).src);
+  mains.push((await getImage({ src: img, width: 1000, format: 'avif', quality: 80 })).src);
+}
+---
+
+{
+  photos.length > 0 && (
+    <div class="mb-6">
+      <p class="mb-2 text-xs font-medium text-gray-500">{title}</p>
+      <img
+        id={`eq-main-${folder}`}
+        src={mains[0]}
+        alt={title}
+        class="h-52 w-full rounded-lg object-cover"
+        loading="lazy"
+      />
+      {photos.length > 1 && (
+        <div class="mt-2 flex gap-2">
+          {photos.map((_, i) => (
+            <button
+              type="button"
+              data-folder={folder}
+              data-src={mains[i]}
+              class={`eq-thumb flex-1 overflow-hidden rounded-md border-2 transition hover:opacity-80 ${
+                i === 0 ? 'border-accent-600' : 'border-transparent'
+              }`}
+              aria-label={isZh ? `查看第 ${i + 1} 张` : `View photo ${i + 1}`}
+            >
+              <img src={thumbs[i]} alt="" class="h-14 w-full object-cover" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
