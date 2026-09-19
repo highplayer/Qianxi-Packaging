@@ -45,8 +45,8 @@ const prefix = lang === 'zh' ? '/zh' : '';
       />
     </div>
 
-    <!-- Factory Details: Production Layout + Equipment -->
-    <div class="mt-16 grid gap-8 lg:grid-cols-2">
+    <!-- Factory Details: Production Layout (own row) above the production lines -->
+    <div class="mt-16 space-y-8">
       <!-- Production Layout -->
       <div class="rounded-xl border border-gray-200 bg-white p-8">
         <h3 class="mb-4 text-xl font-bold text-primary-800" style="font-family: var(--font-heading);">
@@ -90,16 +90,18 @@ const prefix = lang === 'zh' ? '/zh' : '';
           <h3 class="mb-4 text-xl font-bold text-primary-800" style="font-family: var(--font-heading);">
             {isZh ? '主要生产设备' : 'Main Equipment'}
           </h3>
-          <EquipmentGallery
-            folder="printer-slotter"
-            title={isZh ? '高速四色印刷模切开槽机（1228型）实拍' : 'High-Speed 4-Color Printer Slotter (Model 1228) — Live Photos'}
-            isZh={isZh}
-          />
-          <EquipmentGallery
-            folder="gluer-stitcher"
-            title={isZh ? '全自动粘钉一体机（2800型）实拍 · 糊盒钉箱流水线' : 'Auto Gluer-Stitcher (Model 2800) — Folding & Stitching Line'}
-            isZh={isZh}
-          />
+          <div class="mb-6 grid gap-6 lg:grid-cols-2">
+            <EquipmentGallery
+              folder="printer-slotter"
+              title={isZh ? '高速四色印刷模切开槽机（1228型）实拍' : 'High-Speed 4-Color Printer Slotter (Model 1228) — Live Photos'}
+              isZh={isZh}
+            />
+            <EquipmentGallery
+              folder="gluer-stitcher"
+              title={isZh ? '全自动粘钉一体机（2800型）实拍 · 糊盒钉箱流水线' : 'Auto Gluer-Stitcher (Model 2800) — Folding & Stitching Line'}
+              isZh={isZh}
+            />
+          </div>
           <div class="space-y-3 text-sm">
             {[
               { zh: '高速四色印刷模切开槽机（1228型）× 1', en: 'High-Speed 4-Color Printer Slotter (Model 1228) × 1' },

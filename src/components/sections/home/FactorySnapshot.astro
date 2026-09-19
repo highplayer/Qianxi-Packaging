@@ -1,8 +1,21 @@
 ---
-import ImagePlaceholder from '@components/ImagePlaceholder.astro';
+import { Image } from 'astro:assets';
 import type { SiteTranslations } from '@/i18n/types';
-const { t } = Astro.props;
-interface Props { t: SiteTranslations; }
+import linePrinterSlotter from '@images/equipment/printer-slotter/01-front.png';
+import lineGluerStitcher from '@images/equipment/gluer-stitcher/01.png';
+import warehouseImg from '@images/equipment/warehouse.png';
+import finishedImg from '@images/equipment/finished-project.png';
+
+const { t, lang = 'en' } = Astro.props;
+interface Props { t: SiteTranslations; lang?: string; }
+const isZh = lang === 'zh';
+
+const shots = [
+  { img: linePrinterSlotter, zh: '印刷开槽模切流水线', en: 'Printer Slotter Line' },
+  { img: lineGluerStitcher, zh: '糊盒钉箱流水线', en: 'Gluer-Stitcher Line' },
+  { img: warehouseImg, zh: '成品仓库', en: 'Warehouse' },
+  { img: finishedImg, zh: '印刷成品', en: 'Finished Products' },
+];
 ---
 
 <section class="py-20">
@@ -13,10 +26,20 @@ interface Props { t: SiteTranslations; }
     <div class="grid gap-8 lg:grid-cols-3">
       <div class="lg:col-span-2">
         <div class="grid grid-cols-2 gap-4">
-          <ImagePlaceholder label="[Production Workshop]" height="h-40" />
-          <ImagePlaceholder label="[Warehouse]" height="h-40" />
-          <ImagePlaceholder label="[QC Laboratory]" height="h-40" />
-          <ImagePlaceholder label="[Finished Products]" height="h-40" />
+          {shots.map(shot => (
+            <figure class="overflow-hidden rounded-lg bg-white shadow-sm">
+              <Image
+                src={shot.img}
+                alt={isZh ? shot.zh : shot.en}
+                width={640}
+                format="avif"
+                class="h-40 w-full object-cover"
+              />
+              <figcaption class="px-3 py-2 text-xs font-medium text-gray-600">
+                {isZh ? shot.zh : shot.en}
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
       <div class="rounded-xl bg-primary-900 p-8 text-white">
