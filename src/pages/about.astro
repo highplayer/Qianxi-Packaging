@@ -1,7 +1,6 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
 import CompanyIntro from '@components/sections/about/CompanyIntro.astro';
-import FactoryGallery from '@components/sections/about/FactoryGallery.astro';
 import Certifications from '@components/sections/about/Certifications.astro';
 import { getTranslations } from '@/i18n/utils';
 
@@ -11,7 +10,6 @@ const t = getTranslations('en');
 
 <MainLayout>
   <CompanyIntro t={t} lang="en" />
-  <FactoryGallery t={t} />
   <Certifications t={t} />
   <!-- Closing CTA -->
   <section class="py-20">

@@ -49,7 +49,6 @@ const en: SiteTranslations = {
     ctaNamePlaceholder: 'Your Name',
     ctaRequirementsPlaceholder: 'Brief Requirements (optional)',
     ctaButton: 'Send Inquiry',
-    testimonialsTitle: 'What Our Clients Say',
     faqTitle: 'Frequently Asked Questions',
   },
   about: {
@@ -59,10 +58,6 @@ const en: SiteTranslations = {
     introHighlight1: 'ISO 9001 certified quality management',
     introHighlight2: 'Fully automated corrugated production line',
     introHighlight3: 'In-house QC laboratory & material testing',
-    galleryTitle: 'Factory Gallery',
-    workshopLabel: 'Production Workshop — Corrugated line in operation',
-    warehouseLabel: 'Warehouse — Finished goods storage area',
-    qcLabLabel: 'QC Laboratory — Testing equipment & inspection',
     certificationsTitle: 'Certifications & Compliance',
     certISO: 'ISO 9001',
     certISODesc: 'Quality Management System',

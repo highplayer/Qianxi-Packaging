@@ -49,7 +49,6 @@ const zh: SiteTranslations = {
     ctaNamePlaceholder: '您的姓名',
     ctaRequirementsPlaceholder: '简要需求（选填）',
     ctaButton: '发送询盘',
-    testimonialsTitle: '客户评价',
     faqTitle: '常见问题',
   },
   about: {
@@ -59,10 +58,6 @@ const zh: SiteTranslations = {
     introHighlight1: 'ISO 9001 质量管理体系认证',
     introHighlight2: '全自动瓦楞生产线',
     introHighlight3: '自有质检实验室与材料检测',
-    galleryTitle: '工厂实景',
-    workshopLabel: '生产车间 — 瓦楞线运行中',
-    warehouseLabel: '仓库 — 成品存放区',
-    qcLabLabel: '质检实验室 — 检测设备与检验',
     certificationsTitle: '认证与合规',
     certISO: 'ISO 9001',
     certISODesc: '质量管理体系',

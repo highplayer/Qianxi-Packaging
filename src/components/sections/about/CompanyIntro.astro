@@ -57,7 +57,7 @@ const prefix = lang === 'zh' ? '/zh' : '';
             ? '本项目主要在已建厂房基础上进行生产线布置和设备安装，不涉及土建工程。生产区位于车间北侧，自北向南依次布置：'
             : 'Production line layout and equipment installation within an existing factory building (no civil works). The production area occupies the north side of the workshop, arranged north to south:'}
         </p>
-        <div class="grid grid-cols-2 gap-3 text-sm">
+        <div class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
           {[
             ['印刷区', 'Printing Zone'],
             ['堆码区', 'Stacking Zone'],
@@ -67,7 +67,7 @@ const prefix = lang === 'zh' ? '/zh' : '';
             <div class="rounded-lg bg-gray-100 px-4 py-3 font-medium text-primary-800">{isZh ? zh : en}</div>
           ))}
         </div>
-        <div class="mt-6 grid gap-3 text-sm">
+        <div class="mt-6 grid gap-3 text-sm lg:grid-cols-2">
           {[
             { zh: '原材料库 200 m²（北侧）', en: 'Raw Materials: 200 m² (North)' },
             { zh: '半成品区 80 m² + 预存区 100 m²（中部）', en: 'Semi-finished: 80 m² + Pre-storage: 100 m² (Central)' },
@@ -102,7 +102,7 @@ const prefix = lang === 'zh' ? '/zh' : '';
               isZh={isZh}
             />
           </div>
-          <div class="space-y-3 text-sm">
+          <div class="grid gap-3 text-sm lg:grid-cols-2">
             {[
               { zh: '高速四色印刷模切开槽机（1228型）× 1', en: 'High-Speed 4-Color Printer Slotter (Model 1228) × 1' },
               { zh: '全自动粘钉一体机（2800型）× 1', en: 'Auto Gluer-Stitcher (Model 2800) × 1' },
@@ -125,7 +125,7 @@ const prefix = lang === 'zh' ? '/zh' : '';
           <h3 class="mb-4 text-xl font-bold text-primary-800" style="font-family: var(--font-heading);">
             {isZh ? '环保合规' : 'Environmental Compliance'}
           </h3>
-          <div class="space-y-3 text-sm">
+          <div class="grid gap-3 text-sm lg:grid-cols-2">
             <div class="flex items-start gap-2">
               <span class="mt-0.5 text-accent-600">•</span>
               <span class="text-gray-600">{isZh ? '一般固废暂存区 10 m²，危废暂存间 5 m²（重点防渗）' : 'General waste 10 m² + Hazardous waste room 5 m² (impermeable)'}</span>

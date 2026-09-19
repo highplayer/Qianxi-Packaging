@@ -47,7 +47,6 @@ export interface SiteTranslations {
     ctaNamePlaceholder: string;
     ctaRequirementsPlaceholder: string;
     ctaButton: string;
-    testimonialsTitle: string;
     faqTitle: string;
   };
   about: {
@@ -57,10 +56,6 @@ export interface SiteTranslations {
     introHighlight1: string;
     introHighlight2: string;
     introHighlight3: string;
-    galleryTitle: string;
-    workshopLabel: string;
-    warehouseLabel: string;
-    qcLabLabel: string;
     certificationsTitle: string;
     certISO: string;
     certISODesc: string;
