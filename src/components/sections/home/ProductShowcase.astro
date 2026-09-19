@@ -18,9 +18,9 @@ const products = allProducts.filter(p => p.id.startsWith(`${locale}/`));
     <h2 class="mb-12 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
       {t.home.productShowcaseTitle}
     </h2>
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-8 sm:grid-cols-2">
       {products.slice(0, 4).map(product => (
-        <a href={`${base}${pathPrefix}/products/${product.data.main.id}`} class="group block overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
+        <a href={`${base}${pathPrefix}/products/${product.id.replace(/^(en|zh)\//, '')}`} class="group block overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
           <ImagePlaceholder label={`[${product.data.title} Image]`} height="h-48" />
           <div class="p-4">
             <h3 class="font-bold text-primary-800 group-hover:text-accent-600" style="font-family: var(--font-heading);">{product.data.title}</h3>

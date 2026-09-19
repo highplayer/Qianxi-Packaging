@@ -71,17 +71,14 @@ export interface SiteTranslations {
   };
   products: {
     listTitle: string;
-    filterFluteType: string;
-    filterUsage: string;
-    filterBtn: string;
     flute3layer: string;
     flute5layer: string;
-    flute7layer: string;
-    fluteE: string;
-    usageMoving: string;
-    usageEcommerce: string;
-    usageIndustrial: string;
-    usageRetail: string;
+    priceListTitle: string;
+    tableSize: string;
+    tableQuality: string;
+    tablePrice: string;
+    pricingNote: string;
+    viewPriceList: string;
     detailSpecs: string;
     detailApplications: string;
     detailCustomOptions: string;
