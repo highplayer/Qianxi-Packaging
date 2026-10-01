@@ -9,7 +9,7 @@ main:
   imgAlt: "Heavy-duty 7-layer corrugated boxes"
 specs:
   material: "High-Grade Kraft / Reinforced Liner"
-  fluteType: "AAA Flute (Triple Wall)"
+  fluteType: "BAB / BAA / CAC / BAC"
   burstStrength: "≥ 2500 kPa (ISO 2759)"
   edgeCrush: "≥ 10.0 kN/m (ISO 3037)"
   sizeRange: "Custom — large format available"

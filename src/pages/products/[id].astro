@@ -47,7 +47,7 @@ const pricing = pricingBySlug[product.id.replace(/^en\//, '')];
               <thead>
                 <tr class="bg-primary-900 text-white">
                   <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableSize}</th>
-                  <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableQuality}</th>
+                  <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableType}</th>
                   {pricing.tiers.map(tier => (
                     <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">{tier.en}</th>
                   ))}
@@ -57,7 +57,7 @@ const pricing = pricingBySlug[product.id.replace(/^en\//, '')];
                 {pricing.rows.map((row, i) => (
                   <tr class={i % 2 === 1 ? 'bg-gray-50' : ''}>
                     <td class="px-4 py-3 font-medium text-primary-800 whitespace-nowrap">{row.size}</td>
-                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{row.quality}</td>
+                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{row.type}</td>
                     {row.prices.map(price => (
                       <td class="px-4 py-3 text-right font-semibold text-gray-800 whitespace-nowrap">
                         {pricing.currency} {price}

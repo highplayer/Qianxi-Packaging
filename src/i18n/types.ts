@@ -76,7 +76,7 @@ export interface SiteTranslations {
     flute7layer: string;
     priceListTitle: string;
     tableSize: string;
-    tableQuality: string;
+    tableType: string;
     tablePrice: string;
     pricingNote: string;
     viewPriceList: string;

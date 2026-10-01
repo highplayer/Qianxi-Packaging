@@ -9,7 +9,7 @@ main:
   imgAlt: "七层重型瓦楞纸箱"
 specs:
   material: "高等级牛皮纸 / 增强型里纸"
-  fluteType: "AAA 楞（三瓦楞）"
+  fluteType: "BAB / BAA / CAC / BAC 楞"
   burstStrength: "≥ 2500 kPa (ISO 2759)"
   edgeCrush: "≥ 10.0 kN/m (ISO 3037)"
   sizeRange: "定制 — 大规格可做"
