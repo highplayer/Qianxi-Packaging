@@ -142,6 +142,15 @@ interface Props { t: SiteTranslations; }
   const successEl = document.getElementById('form-success')!;
   const errorEl = document.getElementById('form-error')!;
 
+  // Prefill name / email / message from the URL query (e.g. arriving from the homepage CTA)
+  const urlParams = new URLSearchParams(window.location.search);
+  ['name', 'email', 'message'].forEach(field => {
+    const value = urlParams.get(field);
+    if (!value) return;
+    const el = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${field}"]`);
+    if (el && !el.value) el.value = value;
+  });
+
   // Show custom quantity input when "custom" is selected
   const qtySelect = document.getElementById('quantity-select') as HTMLSelectElement;
   const customQtyInput = document.getElementById('custom-quantity-input') as HTMLInputElement;

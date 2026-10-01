@@ -1,17 +1,17 @@
 ---
 import type { SiteTranslations } from '@/i18n/types';
-const { t } = Astro.props;
-interface Props { t: SiteTranslations; }
+const { t, lang = 'en' } = Astro.props;
+interface Props { t: SiteTranslations; lang?: string; }
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'zh' ? '/zh' : '';
+const quoteUrl = `${base}${prefix}/quote`;
 ---
 
 <section class="py-20">
   <div class="mx-auto max-w-4xl rounded-2xl bg-primary-900 px-6 py-16 text-center text-white">
     <h2 class="mb-4 text-3xl font-extrabold" style="font-family: var(--font-heading);">{t.home.ctaTitle}</h2>
     <p class="mb-8 text-gray-300">{t.home.ctaSubtitle}</p>
-    <form id="homepage-cta-form" class="mx-auto flex max-w-xl flex-wrap justify-center gap-3">
-      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-      </div>
+    <form id="homepage-cta-form" class="mx-auto flex max-w-xl flex-wrap justify-center gap-3" data-quote-url={quoteUrl}>
       <input type="email" name="email" required placeholder={t.home.ctaEmailPlaceholder}
         class="flex-1 min-w-[200px] rounded-lg border-0 px-4 py-3 text-gray-900" />
       <input type="text" name="name" placeholder={t.home.ctaNamePlaceholder}
@@ -27,24 +27,20 @@ interface Props { t: SiteTranslations; }
 </section>
 
 <script>
-  const form = document.getElementById('homepage-cta-form') as HTMLFormElement;
-  form?.addEventListener('submit', async (e) => {
+  // Send the visitor to the quote page, carrying the name / email / requirements they typed.
+  const form = document.getElementById('homepage-cta-form') as HTMLFormElement | null;
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const apiUrl = (window as any).QIANXI_CONFIG?.apiUrl;
-    if (!apiUrl) {
-      form.reset();
-      form.innerHTML = '<div class="text-green-400 text-lg font-semibold">✓ Thank you! We will reply within 24 hours.</div>';
-      return;
-    }
-    try {
-      const formData = new FormData(form);
-      const res = await fetch(apiUrl, { method: 'POST', body: formData });
-      if (res.ok) {
-        form.reset();
-        form.innerHTML = '<div class="text-green-400 text-lg font-semibold">✓ Thank you! We will reply within 24 hours.</div>';
-      }
-    } catch {
-      form.innerHTML = '<div class="text-red-400">Something went wrong. Please email us directly.</div>';
-    }
+    const target = form.getAttribute('data-quote-url') || '/quote';
+    const data = new FormData(form);
+    const params = new URLSearchParams();
+    const email = (data.get('email') || '').toString().trim();
+    const name = (data.get('name') || '').toString().trim();
+    const requirements = (data.get('requirements') || '').toString().trim();
+    if (email) params.set('email', email);
+    if (name) params.set('name', name);
+    if (requirements) params.set('message', requirements);
+    const qs = params.toString();
+    window.location.href = qs ? `${target}?${qs}` : target;
   });
 </script>
