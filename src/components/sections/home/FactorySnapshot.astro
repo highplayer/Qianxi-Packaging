@@ -5,6 +5,8 @@ import linePrinterSlotter from '@images/equipment/printer-slotter/01-front.png';
 import lineGluerStitcher from '@images/equipment/gluer-stitcher/01.png';
 import folderGluer from '@images/equipment/gzpx-3000/01.png';
 import qcLab from '@images/equipment/quality-lab/01.jpg';
+import warehouseImg from '@images/equipment/warehouse.png';
+import finishedImg from '@images/equipment/finished-project.png';
 
 const { t, lang = 'en' } = Astro.props;
 interface Props { t: SiteTranslations; lang?: string; }
@@ -15,6 +17,11 @@ const shots = [
   { img: lineGluerStitcher, zh: '糊盒钉箱流水线', en: 'Gluer-Stitcher Line' },
   { img: folderGluer, zh: '全自动粘箱机 GZPX-3000', en: 'Automatic Folder Gluer GZPX-3000' },
   { img: qcLab, zh: '质检实验室', en: 'QC Laboratory' },
+];
+
+const sideShots = [
+  { img: warehouseImg, zh: '成品仓库', en: 'Warehouse' },
+  { img: finishedImg, zh: '印刷成品', en: 'Finished Products' },
 ];
 ---
 
@@ -42,14 +49,21 @@ const shots = [
           ))}
         </div>
       </div>
-      <div class="rounded-xl bg-primary-900 p-8 text-white">
-        <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-heading);">{t.home.followUs}</h3>
-        <p class="text-sm text-gray-300 mb-6">{t.home.followUsDesc}</p>
-        <div class="flex flex-wrap gap-3">
-          <a href="#" class="rounded-lg bg-white/10 px-4 py-2 text-sm hover:bg-white/20 transition">Instagram</a>
-          <a href="#" class="rounded-lg bg-white/10 px-4 py-2 text-sm hover:bg-white/20 transition">Facebook</a>
-          <a href="#" class="rounded-lg bg-white/10 px-4 py-2 text-sm hover:bg-white/20 transition">LinkedIn</a>
-        </div>
+      <div class="grid gap-4">
+        {sideShots.map(shot => (
+          <figure class="overflow-hidden rounded-lg bg-white shadow-sm">
+            <Image
+              src={shot.img}
+              alt={isZh ? shot.zh : shot.en}
+              width={640}
+              format="avif"
+              class="h-40 w-full object-cover"
+            />
+            <figcaption class="px-3 py-2 text-xs font-medium text-gray-600">
+              {isZh ? shot.zh : shot.en}
+            </figcaption>
+          </figure>
+        ))}
       </div>
     </div>
   </div>
