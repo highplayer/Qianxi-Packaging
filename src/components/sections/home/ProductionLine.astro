@@ -13,6 +13,7 @@ const isZh = lang === 'zh';
 const stages = [
   {
     img: slitterScorer,
+    pos: '',
     zh: {
       title: '分纸压线',
       desc: '按订单尺寸对瓦楞纸板纵向分切与压线：钨钢薄刀（1.0–1.2mm）切口平整无毛边，多点式压线轮按楞型设定压线深度（BC 楞 2.5–3.8mm、B 楞 1.6–2.0mm），保证摇盖反复折叠不爆线。',
@@ -24,6 +25,7 @@ const stages = [
   },
   {
     img: printerSlotter,
+    pos: '',
     zh: {
       title: '印刷 · 开槽 · 模切',
       desc: '高速四色印刷开槽模切机（1228 型）一次走纸完成印刷、开槽与模切，套印精准、槽口光洁，品牌图文、条码与搬运标识可直接印在纸板上。',
@@ -35,6 +37,7 @@ const stages = [
   },
   {
     img: folderGluer,
+    pos: '',
     zh: {
       title: '粘箱成型',
       desc: '全自动粘箱机（GZPX-3000）完成折盒与上胶，胶线均匀、粘合牢固，适合大批量连续生产，成品方正一致。',
@@ -46,6 +49,7 @@ const stages = [
   },
   {
     img: gluerStitcher,
+    pos: '',
     zh: {
       title: '粘钉加固',
       desc: '全自动粘钉一体机（2800 型）可粘箱或打钉，按承重与出口要求灵活选择；钉距均匀、成型方正，重载箱体同样稳固。',
@@ -57,6 +61,7 @@ const stages = [
   },
   {
     img: qcLab,
+    pos: 'object-bottom',
     zh: {
       title: '强度检测',
       desc: '质检实验室配备智能型压缩强度试验机，按 ISO 标准检测耐破强度与边压强度（如五层板 ≥1800 kPa、边压 ≥7.0 kN/m），逐批抽检合格后方可入库出货。',
@@ -90,7 +95,7 @@ const stages = [
               alt={copy.title}
               width={720}
               format="avif"
-              class={`h-52 w-full rounded-lg object-cover md:h-60 ${flip ? 'md:order-2' : ''}`}
+              class={`h-52 w-full rounded-lg object-cover md:h-60 ${stage.pos} ${flip ? 'md:order-2' : ''}`}
             />
             <div class={flip ? 'md:order-1' : ''}>
               <div class="mb-3 flex items-center gap-3">

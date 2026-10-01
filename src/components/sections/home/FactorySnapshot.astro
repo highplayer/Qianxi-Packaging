@@ -13,10 +13,11 @@ interface Props { t: SiteTranslations; lang?: string; }
 const isZh = lang === 'zh';
 
 const shots = [
-  { img: linePrinterSlotter, zh: '印刷开槽模切流水线', en: 'Printer Slotter Line' },
-  { img: lineGluerStitcher, zh: '糊盒钉箱流水线', en: 'Gluer-Stitcher Line' },
-  { img: folderGluer, zh: '全自动粘箱机 GZPX-3000', en: 'Automatic Folder Gluer GZPX-3000' },
-  { img: qcLab, zh: '质检实验室', en: 'QC Laboratory' },
+  { img: linePrinterSlotter, zh: '印刷开槽模切流水线', en: 'Printer Slotter Line', pos: '' },
+  { img: lineGluerStitcher, zh: '糊盒钉箱流水线', en: 'Gluer-Stitcher Line', pos: '' },
+  { img: folderGluer, zh: '全自动粘箱机 GZPX-3000', en: 'Automatic Folder Gluer GZPX-3000', pos: '' },
+  // Portrait shot: the machine's working parts sit in the lower part of the frame
+  { img: qcLab, zh: '质检实验室', en: 'QC Laboratory', pos: 'object-bottom' },
 ];
 
 const sideShots = [
@@ -40,7 +41,7 @@ const sideShots = [
                 alt={isZh ? shot.zh : shot.en}
                 width={640}
                 format="avif"
-                class="h-40 w-full object-cover"
+                class={`h-40 w-full object-cover ${shot.pos}`}
               />
               <figcaption class="px-3 py-2 text-xs font-medium text-gray-600">
                 {isZh ? shot.zh : shot.en}
