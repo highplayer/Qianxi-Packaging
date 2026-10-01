@@ -4,12 +4,14 @@ import { getCollection } from 'astro:content';
 import { getTranslations } from '@/i18n/utils';
 import pricing3Layer from '@data/pricing/3-layer.json';
 import pricing5Layer from '@data/pricing/5-layer.json';
+import pricing7Layer from '@data/pricing/7-layer.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const pricingBySlug: Record<string, typeof pricing3Layer> = {
   '3-layer': pricing3Layer,
   '5-layer': pricing5Layer,
+  '7-layer': pricing7Layer,
 };
 
 export async function getStaticPaths() {

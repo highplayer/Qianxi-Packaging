@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import slitterScorer from '@images/equipment/slitter-scorer/01.jpg';
+import printerSlotter from '@images/equipment/printer-slotter/01-front.png';
+import folderGluer from '@images/equipment/gzpx-3000/01.png';
+import gluerStitcher from '@images/equipment/gluer-stitcher/01.png';
+import qcLab from '@images/equipment/quality-lab/01.jpg';
+
+const { lang = 'en' } = Astro.props;
+interface Props { lang?: string; }
+const isZh = lang === 'zh';
+
+const stages = [
+  {
+    img: slitterScorer,
+    zh: {
+      title: '分纸压线',
+      desc: '按订单尺寸对瓦楞纸板纵向分切与压线：钨钢薄刀（1.0–1.2mm）切口平整无毛边，多点式压线轮按楞型设定压线深度（BC 楞 2.5–3.8mm、B 楞 1.6–2.0mm），保证摇盖反复折叠不爆线。',
+    },
+    en: {
+      title: 'Slitting & Scoring',
+      desc: 'Longitudinal slitting and scoring to order size. Tungsten-steel thin blades (1.0–1.2 mm) give clean, burr-free cuts, while multi-point scoring wheels set the crease depth by flute type (2.5–3.8 mm for BC, 1.6–2.0 mm for B) so flaps fold without cracking.',
+    },
+  },
+  {
+    img: printerSlotter,
+    zh: {
+      title: '印刷 · 开槽 · 模切',
+      desc: '高速四色印刷开槽模切机（1228 型）一次走纸完成印刷、开槽与模切，套印精准、槽口光洁，品牌图文、条码与搬运标识可直接印在纸板上。',
+    },
+    en: {
+      title: 'Printing, Slotting & Die-cutting',
+      desc: 'The high-speed 4-colour printer slotter (Model 1228) prints, slots and die-cuts in a single pass — accurate registration and clean slots let brand graphics, barcodes and handling marks go straight onto the board.',
+    },
+  },
+  {
+    img: folderGluer,
+    zh: {
+      title: '粘箱成型',
+      desc: '全自动粘箱机（GZPX-3000）完成折盒与上胶，胶线均匀、粘合牢固，适合大批量连续生产，成品方正一致。',
+    },
+    en: {
+      title: 'Folding & Gluing',
+      desc: 'The automatic folder gluer (GZPX-3000) folds and glues the box with even glue lines and a reliable bond — built for continuous, high-volume production with consistent, square boxes.',
+    },
+  },
+  {
+    img: gluerStitcher,
+    zh: {
+      title: '粘钉加固',
+      desc: '全自动粘钉一体机（2800 型）可粘箱或打钉，按承重与出口要求灵活选择；钉距均匀、成型方正，重载箱体同样稳固。',
+    },
+    en: {
+      title: 'Gluing & Stitching',
+      desc: 'The auto gluer-stitcher (Model 2800) either glues or stitches, chosen to suit load and export requirements — even stitch pitch and square forming keep heavy-duty boxes rigid.',
+    },
+  },
+  {
+    img: qcLab,
+    zh: {
+      title: '强度检测',
+      desc: '质检实验室配备智能型压缩强度试验机，按 ISO 标准检测耐破强度与边压强度（如五层板 ≥1800 kPa、边压 ≥7.0 kN/m），逐批抽检合格后方可入库出货。',
+    },
+    en: {
+      title: 'Strength Testing',
+      desc: 'Our QC laboratory runs an intelligent compression strength tester, verifying burst and edge-crush strength to ISO standards (e.g. ≥1800 kPa burst and ≥7.0 kN/m edge crush for 5-layer board) before any batch is released.',
+    },
+  },
+];
+---
+
+<section class="py-20 bg-gray-50">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="mb-4 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
+      {isZh ? '完整的瓦楞纸箱生产流水线' : 'Our Complete Production Line'}
+    </h2>
+    <p class="mx-auto mb-12 max-w-3xl text-center leading-relaxed text-gray-600">
+      {isZh
+        ? '从纸板分切压线，到印刷开槽模切、粘箱钉箱，再到实验室强度检测 —— 我们的设备覆盖瓦楞纸箱制造的完整工序，每一环都可控可查。'
+        : 'From board slitting and scoring, through printing, slotting and die-cutting, folding and stitching, to laboratory strength testing — our equipment covers every step of corrugated box manufacturing, with each stage controlled and traceable.'}
+    </p>
+    <div class="space-y-6">
+      {stages.map((stage, i) => {
+        const copy = isZh ? stage.zh : stage.en;
+        const flip = i % 2 === 1;
+        return (
+          <div class="grid items-center gap-6 rounded-xl bg-white p-6 shadow-sm md:grid-cols-2 md:gap-8">
+            <Image
+              src={stage.img}
+              alt={copy.title}
+              width={720}
+              format="avif"
+              class={`h-52 w-full rounded-lg object-cover md:h-60 ${flip ? 'md:order-2' : ''}`}
+            />
+            <div class={flip ? 'md:order-1' : ''}>
+              <div class="mb-3 flex items-center gap-3">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-600 text-sm font-bold text-white">
+                  {i + 1}
+                </span>
+                <h3 class="text-xl font-bold text-primary-800" style="font-family: var(--font-heading);">
+                  {copy.title}
+                </h3>
+              </div>
+              <p class="text-sm leading-relaxed text-gray-600">{copy.desc}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

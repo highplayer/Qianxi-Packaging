@@ -75,6 +75,7 @@ const zh: SiteTranslations = {
     listTitle: '产品中心',
     flute3layer: '三层（A/B/C 楞）',
     flute5layer: '五层（AB/BC 楞）',
+    flute7layer: '七层（AAA 楞）',
     priceListTitle: '尺寸价目表',
     tableSize: '尺寸（内径 mm）',
     tableQuality: '质量',

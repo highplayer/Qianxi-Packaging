@@ -75,6 +75,7 @@ const en: SiteTranslations = {
     listTitle: 'Our Products',
     flute3layer: '3-Layer (A/B/C Flute)',
     flute5layer: '5-Layer (AB/BC Flute)',
+    flute7layer: '7-Layer (AAA Flute)',
     priceListTitle: 'Price List by Size',
     tableSize: 'Inner Size (mm)',
     tableQuality: 'Quality',

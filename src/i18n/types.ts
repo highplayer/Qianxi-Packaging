@@ -73,6 +73,7 @@ export interface SiteTranslations {
     listTitle: string;
     flute3layer: string;
     flute5layer: string;
+    flute7layer: string;
     priceListTitle: string;
     tableSize: string;
     tableQuality: string;
