@@ -3,8 +3,8 @@ import { Image } from 'astro:assets';
 import type { SiteTranslations } from '@/i18n/types';
 import linePrinterSlotter from '@images/equipment/printer-slotter/01-front.png';
 import lineGluerStitcher from '@images/equipment/gluer-stitcher/01.png';
-import warehouseImg from '@images/equipment/warehouse.png';
-import finishedImg from '@images/equipment/finished-project.png';
+import folderGluer from '@images/equipment/gzpx-3000/01.png';
+import qcLab from '@images/equipment/quality-lab/01.jpg';
 
 const { t, lang = 'en' } = Astro.props;
 interface Props { t: SiteTranslations; lang?: string; }
@@ -13,8 +13,8 @@ const isZh = lang === 'zh';
 const shots = [
   { img: linePrinterSlotter, zh: '印刷开槽模切流水线', en: 'Printer Slotter Line' },
   { img: lineGluerStitcher, zh: '糊盒钉箱流水线', en: 'Gluer-Stitcher Line' },
-  { img: warehouseImg, zh: '成品仓库', en: 'Warehouse' },
-  { img: finishedImg, zh: '印刷成品', en: 'Finished Products' },
+  { img: folderGluer, zh: '全自动粘箱机 GZPX-3000', en: 'Automatic Folder Gluer GZPX-3000' },
+  { img: qcLab, zh: '质检实验室', en: 'QC Laboratory' },
 ];
 ---
 
