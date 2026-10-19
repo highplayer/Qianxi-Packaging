@@ -202,17 +202,15 @@ interface Props { t: SiteTranslations; }
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
     try {
-      // Web3Forms accepts JSON; build a plain object so we can override the email subject.
-      const payload: Record<string, string> = {};
-      new FormData(form).forEach((value, key) => {
-        payload[key] = value.toString();
-      });
-      payload.subject = `网站询盘 · ${nameInput.value.trim()}`;
+      // FormData + Accept: application/json — both are CORS-safelisted, so no preflight is
+      // triggered, and Web3Forms still answers with JSON we can inspect.
+      const formData = new FormData(form);
+      formData.set('subject', `网站询盘 · ${nameInput.value.trim()}`);
 
       const res = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
+        headers: { Accept: 'application/json' },
+        body: formData,
       });
       const data = await res.json().catch(() => null);
       if (res.ok && data?.success !== false) {
