@@ -7,10 +7,15 @@ interface Props { t: SiteTranslations; }
   <h2 class="mb-1 text-2xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">{t.contact.formTitle}</h2>
   <p class="mb-6 text-sm text-gray-600">{t.contact.formSubtitle}</p>
 
-  <form id="inquiry-form" class="space-y-5" novalidate>
-    <!-- Honeypot: hidden from humans, filled by bots -->
+  <form id="inquiry-form" class="space-y-5" action="https://api.web3forms.com/submit" method="POST" novalidate>
+    <!-- Web3Forms: the access key is a public form identifier, safe to expose in HTML -->
+    <input type="hidden" name="access_key" value="ef70c770-efca-4155-a58e-eaae6d4b23a6" />
+    <input type="hidden" name="subject" value="网站询盘 / New website inquiry" />
+    <input type="hidden" name="from_name" value="Qianxi Packaging Website" />
+    <!-- Honeypot: hidden from humans, filled by bots (_gotcha + Web3Forms botcheck) -->
     <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      <input type="text" name="botcheck" tabindex="-1" autocomplete="off" />
     </div>
     <!-- Name -->
     <div>
@@ -178,23 +183,50 @@ interface Props { t: SiteTranslations; }
     }
     if (!valid) return;
 
-    const apiUrl = (window as any).QIANXI_CONFIG?.apiUrl;
-    if (!apiUrl) {
+    // Honeypot filled → silently pretend success without sending anything
+    const gotcha = form.querySelector<HTMLInputElement>('[name="_gotcha"]');
+    if (gotcha?.value) {
       form.classList.add('hidden');
       successEl.classList.remove('hidden');
       return;
     }
+
+    const apiUrl = (window as any).QIANXI_CONFIG?.apiUrl;
+    if (!apiUrl) {
+      // Never fake a success when the endpoint is missing — the customer must know it failed.
+      console.error('[inquiry] QIANXI_CONFIG.apiUrl is not configured');
+      errorEl.classList.remove('hidden');
+      return;
+    }
+
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
     try {
-      const formData = new FormData(form);
-      const res = await fetch(apiUrl, { method: 'POST', body: formData });
-      if (res.ok) {
+      // Web3Forms accepts JSON; build a plain object so we can override the email subject.
+      const payload: Record<string, string> = {};
+      new FormData(form).forEach((value, key) => {
+        payload[key] = value.toString();
+      });
+      payload.subject = `网站询盘 · ${nameInput.value.trim()}`;
+
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success !== false) {
         form.classList.add('hidden');
         successEl.classList.remove('hidden');
       } else {
+        console.error('[inquiry] submission rejected:', data);
         errorEl.classList.remove('hidden');
       }
-    } catch {
+    } catch (err) {
+      console.error('[inquiry] submission failed:', err);
       errorEl.classList.remove('hidden');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 </script>
