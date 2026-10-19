@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="7-layer corrugated board cross-section">
+  <title>7-Layer Corrugated Board — Triple Wall</title>
+  <!-- outer liner -->
+  <rect x="40" y="60" width="320" height="12" rx="3" fill="#d8b184" />
+  <!-- first flute -->
+  <path d="M 40 94
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0"
+        fill="none" stroke="#a8763f" stroke-width="5" stroke-linecap="round" />
+  <rect x="40" y="116" width="320" height="12" rx="3" fill="#d8b184" />
+  <!-- second flute -->
+  <path d="M 40 150
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0"
+        fill="none" stroke="#a8763f" stroke-width="5" stroke-linecap="round" />
+  <rect x="40" y="172" width="320" height="12" rx="3" fill="#d8b184" />
+  <!-- third flute -->
+  <path d="M 40 206
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0
+           q 20 -24 40 0 q 20 24 40 0"
+        fill="none" stroke="#a8763f" stroke-width="5" stroke-linecap="round" />
+  <!-- inner liner -->
+  <rect x="40" y="228" width="320" height="12" rx="3" fill="#d8b184" />
+  <text x="360" y="282" text-anchor="end" fill="#7a5230" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" letter-spacing="1.5" font-weight="600">7-LAYER</text>
+</svg>

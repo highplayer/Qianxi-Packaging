@@ -1,7 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import ImagePlaceholder from '@components/ImagePlaceholder.astro';
+import type { ImageMetadata } from 'astro';
 import type { SiteTranslations } from '@/i18n/types';
+import board3 from '@images/products/3-layer.svg';
+import board5 from '@images/products/5-layer.svg';
+import board7 from '@images/products/7-layer.svg';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const { t, lang = 'en' } = Astro.props;
@@ -11,6 +15,13 @@ const allProducts = await getCollection('products');
 const locale = lang === 'zh' ? 'zh' : 'en';
 const pathPrefix = lang === 'zh' ? '/zh' : '';
 const products = allProducts.filter(p => p.id.startsWith(`${locale}/`));
+
+// Board cross-section artwork per product slug (placeholder as fallback for future products)
+const artBySlug: Record<string, ImageMetadata> = {
+  '3-layer': board3,
+  '5-layer': board5,
+  '7-layer': board7,
+};
 ---
 
 <section class="py-20 bg-gray-50">
@@ -18,16 +29,24 @@ const products = allProducts.filter(p => p.id.startsWith(`${locale}/`));
     <h2 class="mb-12 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
       {t.home.productShowcaseTitle}
     </h2>
-    <div class="grid gap-8 sm:grid-cols-2">
-      {products.slice(0, 4).map(product => (
-        <a href={`${base}${pathPrefix}/products/${product.id.replace(/^(en|zh)\//, '')}`} class="group block overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
-          <ImagePlaceholder label={`[${product.data.title} Image]`} height="h-48" />
-          <div class="p-4">
-            <h3 class="font-bold text-primary-800 group-hover:text-accent-600" style="font-family: var(--font-heading);">{product.data.title}</h3>
-            <p class="mt-1 text-sm text-gray-600">{product.data.description}</p>
-          </div>
-        </a>
-      ))}
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {products.slice(0, 4).map(product => {
+        const slug = product.id.replace(/^(en|zh)\//, '');
+        const art = artBySlug[slug];
+        return (
+          <a href={`${base}${pathPrefix}/products/${slug}`} class="group block overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
+            {art ? (
+              <img src={art.src} alt={product.data.title} class="h-52 w-full object-contain p-6" />
+            ) : (
+              <ImagePlaceholder label={`[${product.data.title} Image]`} height="h-52" />
+            )}
+            <div class="p-4">
+              <h3 class="font-bold text-primary-800 group-hover:text-accent-600" style="font-family: var(--font-heading);">{product.data.title}</h3>
+              <p class="mt-1 text-sm text-gray-600">{product.data.description}</p>
+            </div>
+          </a>
+        );
+      })}
     </div>
   </div>
 </section>
