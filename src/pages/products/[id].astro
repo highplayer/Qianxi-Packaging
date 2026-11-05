@@ -24,50 +24,89 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 const t = getTranslations('en');
 const { data } = product;
-const pricing = pricingBySlug[product.id.replace(/^en\//, '')];
+const slug = product.id.replace(/^en\//, '');
+const pricing = pricingBySlug[slug];
+const layerNum = slug.charAt(0);
+const quoteUrl = `${base}/quote?layer=${layerNum}`;
 ---
 
 <MainLayout>
   <section class="py-20">
     <div class="mx-auto max-w-7xl px-4">
       <!-- Header -->
-      <div class="mb-12 max-w-3xl">
+      <div class="mb-8 max-w-3xl">
         <h1 class="mb-4 text-4xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">{data.title}</h1>
         <p class="text-lg leading-relaxed text-gray-600">{data.main.content}</p>
       </div>
 
-      <!-- Price list: rows = sizes, columns = quantity tiers -->
+      <!-- Type jump navigation -->
+      {pricing && (
+        <div class="mb-10 flex flex-wrap items-center gap-2 border-y border-gray-200 py-4">
+          <span class="mr-1 text-sm font-medium text-gray-500">{t.products.typeNavLabel}</span>
+          {pricing.types.map(type => (
+            <a
+              href={`#type-${type.code}`}
+              class="rounded-full border border-gray-300 px-3.5 py-1 text-sm font-semibold text-gray-700 transition hover:border-accent-600 hover:text-accent-600"
+            >
+              {type.code}
+            </a>
+          ))}
+        </div>
+      )}
+
+      <!-- Price lists: one table per flute type -->
       {pricing && (
         <div class="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
           <h2 class="mb-6 text-2xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
             {t.products.priceListTitle}
           </h2>
-          <div class="overflow-x-auto">
-            <table class="w-full min-w-[640px] border-collapse text-sm">
-              <thead>
-                <tr class="bg-primary-900 text-white">
-                  <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableSize}</th>
-                  <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableType}</th>
-                  {pricing.tiers.map(tier => (
-                    <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">{tier.en}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {pricing.rows.map((row, i) => (
-                  <tr class={i % 2 === 1 ? 'bg-gray-50' : ''}>
-                    <td class="px-4 py-3 font-medium text-primary-800 whitespace-nowrap">{row.size}</td>
-                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{row.type}</td>
-                    {row.prices.map(price => (
-                      <td class="px-4 py-3 text-right font-semibold text-gray-800 whitespace-nowrap">
-                        {pricing.currency} {price}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+          <!-- Notices: outer dimensions + Eastern Europe pricing -->
+          <div class="mb-8 space-y-3">
+            <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-relaxed text-amber-900">
+              {t.products.sizeNotice}
+            </div>
+            <div class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-xs leading-relaxed text-sky-900">
+              {t.products.regionNotice}
+            </div>
           </div>
+
+          {pricing.types.map(type => (
+            <div class="mb-10 last:mb-0">
+              <h3
+                id={`type-${type.code}`}
+                class="mb-3 scroll-mt-24 text-lg font-bold text-primary-800"
+                style="font-family: var(--font-heading);"
+              >
+                {t.products.tableType} {type.code}
+              </h3>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[640px] border-collapse text-sm">
+                  <thead>
+                    <tr class="bg-primary-900 text-white">
+                      <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableSize}</th>
+                      {pricing.tiers.map(tier => (
+                        <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">{tier.en}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {type.rows.map((row, i) => (
+                      <tr class={i % 2 === 1 ? 'bg-gray-50' : ''}>
+                        <td class="px-4 py-3 font-medium text-primary-800 whitespace-nowrap">{row.size}</td>
+                        {row.prices.map(price => (
+                          <td class="px-4 py-3 text-right font-semibold text-gray-800 whitespace-nowrap">
+                            {pricing.currency} {price}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+
           <p class="mt-4 text-xs text-gray-500">{t.products.pricingNote}</p>
         </div>
       )}
@@ -94,7 +133,7 @@ const pricing = pricingBySlug[product.id.replace(/^en\//, '')];
 
       <!-- CTA -->
       <div class="mt-12 text-center">
-        <a href={`${base}/quote`} class="inline-block rounded-lg bg-accent-600 px-8 py-3.5 font-semibold text-white transition hover:bg-accent-700">
+        <a href={quoteUrl} class="inline-block rounded-lg bg-accent-600 px-8 py-3.5 font-semibold text-white transition hover:bg-accent-700">
           {t.products.detailRequestQuote} →
         </a>
       </div>

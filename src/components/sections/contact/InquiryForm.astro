@@ -1,7 +1,17 @@
 ---
 import type { SiteTranslations } from '@/i18n/types';
+import pricing3Layer from '@data/pricing/3-layer.json';
+import pricing5Layer from '@data/pricing/5-layer.json';
+import pricing7Layer from '@data/pricing/7-layer.json';
 const { t } = Astro.props;
 interface Props { t: SiteTranslations; }
+
+// Flute codes come from the price-list data so the form never drifts from the tables.
+const typeMap: Record<string, string[]> = {
+  '3': pricing3Layer.types.map(x => x.code),
+  '5': pricing5Layer.types.map(x => x.code),
+  '7': pricing7Layer.types.map(x => x.code),
+};
 ---
 <div class="rounded-xl border border-gray-200 bg-white p-8">
   <h2 class="mb-1 text-2xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">{t.contact.formTitle}</h2>
@@ -64,17 +74,38 @@ interface Props { t: SiteTranslations; }
       </div>
     </div>
 
-    <!-- Material + Quantity row -->
+    <!-- Dimension type: outer vs inner -->
+    <fieldset>
+      <legend class="mb-2 text-xs font-semibold text-gray-700">{t.contact.dimensionLabel}</legend>
+      <div class="flex flex-wrap gap-4">
+        <label class="flex items-center gap-2 text-sm"><input type="radio" name="dimensionType" value="outer" checked class="text-accent-600 focus:ring-accent-500" /> {t.contact.dimensionOuter}</label>
+        <label class="flex items-center gap-2 text-sm"><input type="radio" name="dimensionType" value="inner" class="text-accent-600 focus:ring-accent-500" /> {t.contact.dimensionInner}</label>
+      </div>
+      <p class="mt-2 text-xs text-gray-500">{t.contact.dimensionNote}</p>
+    </fieldset>
+
+    <!-- Layer + Flute type row -->
     <div class="grid gap-4 sm:grid-cols-2">
       <div>
-        <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.materialLabel}</label>
-        <select name="material" class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500">
-          <option value="">{t.contact.materialOption1}</option>
-          <option value="K=K">{t.contact.materialOption2}</option>
-          <option value="A=A">{t.contact.materialOption3}</option>
-          <option value="not-sure">{t.contact.materialOption4}</option>
+        <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.layerLabel}</label>
+        <select name="layer" id="layer-select" class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500">
+          <option value="">{t.contact.layerPlaceholder}</option>
+          <option value="3">{t.contact.layer3}</option>
+          <option value="5">{t.contact.layer5}</option>
+          <option value="7">{t.contact.layer7}</option>
         </select>
       </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.typeLabel}</label>
+        <select name="type" id="type-select" data-flutes={JSON.stringify(typeMap)} data-placeholder={t.contact.typePlaceholder}
+          class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500">
+          <option value="">{t.contact.typePlaceholder}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Quantity + Budget row -->
+    <div class="grid gap-4 sm:grid-cols-2">
       <div>
         <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.quantityLabel}</label>
         <select name="quantity" id="quantity-select" class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500">
@@ -87,13 +118,11 @@ interface Props { t: SiteTranslations; }
         <input type="number" name="customQuantity" id="custom-quantity-input" min="1" placeholder={t.contact.qtyCustom}
           class="mt-2 hidden w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" />
       </div>
-    </div>
-
-    <!-- Budget -->
-    <div>
-      <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.budgetLabel}</label>
-      <input type="text" name="budget" placeholder={t.contact.budgetPlaceholder}
-        class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" />
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.budgetLabel}</label>
+        <input type="text" name="budget" placeholder={t.contact.budgetPlaceholder}
+          class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" />
+      </div>
     </div>
 
     <!-- Printing -->
@@ -147,7 +176,7 @@ interface Props { t: SiteTranslations; }
   const successEl = document.getElementById('form-success')!;
   const errorEl = document.getElementById('form-error')!;
 
-  // Prefill name / email / message from the URL query (e.g. arriving from the homepage CTA)
+  // Prefill from the URL query (e.g. arriving from the homepage CTA or a product page)
   const urlParams = new URLSearchParams(window.location.search);
   ['name', 'email', 'message'].forEach(field => {
     const value = urlParams.get(field);
@@ -155,6 +184,28 @@ interface Props { t: SiteTranslations; }
     const el = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${field}"]`);
     if (el && !el.value) el.value = value;
   });
+
+  // Flute type options depend on the selected layer
+  const layerSelect = document.getElementById('layer-select') as HTMLSelectElement | null;
+  const typeSelect = document.getElementById('type-select') as HTMLSelectElement | null;
+  const flutes = typeSelect ? (JSON.parse(typeSelect.dataset.flutes || '{}') as Record<string, string[]>) : {};
+  const typePlaceholder = typeSelect?.dataset.placeholder || '';
+
+  function refreshTypeOptions() {
+    if (!layerSelect || !typeSelect) return;
+    const list = flutes[layerSelect.value] || [];
+    typeSelect.innerHTML = '';
+    typeSelect.add(new Option(typePlaceholder, ''));
+    list.forEach((code: string) => typeSelect.add(new Option(code, code)));
+  }
+  layerSelect?.addEventListener('change', refreshTypeOptions);
+
+  // Arriving from a product page: preselect the layer and populate its types
+  const layerParam = urlParams.get('layer');
+  if (layerParam && layerSelect && ['3', '5', '7'].includes(layerParam)) {
+    layerSelect.value = layerParam;
+    refreshTypeOptions();
+  }
 
   // Show custom quantity input when "custom" is selected
   const qtySelect = document.getElementById('quantity-select') as HTMLSelectElement;

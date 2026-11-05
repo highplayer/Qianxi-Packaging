@@ -84,7 +84,9 @@ export default {
       const length = field('length');
       const width = field('width');
       const height = field('height');
-      const material = field('material');
+      const layer = field('layer');
+      const type = field('type');
+      const dimensionType = field('dimensionType');
       const quantity = field('quantity');
       const customQuantity = field('customQuantity');
       const printing = field('printing');
@@ -102,7 +104,9 @@ export default {
         email,
         phone,
         size: [length, width, height].filter(Boolean).join(' × '),
-        material,
+        dimensionType,
+        layer,
+        type,
         quantity: quantity === 'custom' ? customQuantity || 'Custom' : quantity,
         printing,
         budget,

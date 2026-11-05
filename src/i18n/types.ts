@@ -77,6 +77,9 @@ export interface SiteTranslations {
     priceListTitle: string;
     tableSize: string;
     tableType: string;
+    typeNavLabel: string;
+    sizeNotice: string;
+    regionNotice: string;
     tablePrice: string;
     pricingNote: string;
     viewPriceList: string;
@@ -96,6 +99,17 @@ export interface SiteTranslations {
     lengthLabel: string;
     widthLabel: string;
     heightLabel: string;
+    dimensionLabel: string;
+    dimensionOuter: string;
+    dimensionInner: string;
+    dimensionNote: string;
+    layerLabel: string;
+    layerPlaceholder: string;
+    layer3: string;
+    layer5: string;
+    layer7: string;
+    typeLabel: string;
+    typePlaceholder: string;
     materialLabel: string;
     materialOption1: string;
     materialOption2: string;
