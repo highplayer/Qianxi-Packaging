@@ -18,9 +18,8 @@ export const COMPANY = {
     en: 'Building 22, No. 301 Lianhua Road, Baiguo Street, Jintang County, Chengdu, Sichuan, China',
     zh: '四川省成都市金堂县白果街道莲花路301号淮州智造新谷22栋1层',
   },
-  email: 'sales@qianxipackaging.com',
-  phone: '+86 XXX XXXX XXXX',
-  whatsapp: '+86 XXX XXXX XXXX',
+  email: 'wmz85474491@gmail.com',
+  whatsapp: '+852 5284 7430',
   coordinates: {
     lat: 30.6822917,
     lng: 104.5567195,

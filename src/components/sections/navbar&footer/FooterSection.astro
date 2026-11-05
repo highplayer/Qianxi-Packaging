@@ -1,5 +1,4 @@
 ---
-import FooterSocialLink from '@components/ui/links/FooterSocialLink.astro';
 import type { SiteTranslations } from '@/i18n/types';
 import { COMPANY } from '@/data_files/constants';
 
@@ -25,12 +24,6 @@ const prefix = lang === 'zh' ? '/zh' : '';
         <p class="text-sm text-gray-300 leading-relaxed max-w-sm">
           {t.footer.brandTagline}
         </p>
-        <div class="flex gap-3 mt-6">
-          <FooterSocialLink url="https://www.facebook.com/" icon="facebookFooter" />
-          <FooterSocialLink url="https://twitter.com/" icon="xFooter" />
-          <FooterSocialLink url="https://www.instagram.com/" icon="instagram" />
-          <FooterSocialLink url="https://www.linkedin.com/" icon="linkedIn" />
-        </div>
       </div>
 
       <!-- Quick Links -->
