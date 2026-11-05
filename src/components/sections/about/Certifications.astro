@@ -1,0 +1,16 @@
+---
+import type { SiteTranslations } from '@/i18n/types';
+import FscCert from '@components/sections/misc/FscCert.astro';
+const { t, lang = 'en' } = Astro.props;
+interface Props { t: SiteTranslations; lang?: string; }
+---
+
+<section class="py-20">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="mb-10 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
+      {t.about.certificationsTitle}
+    </h2>
+
+    <FscCert lang={lang} variant="featured" />
+  </div>
+</section>

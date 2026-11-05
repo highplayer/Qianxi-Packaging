@@ -6,7 +6,7 @@ export const SITE = {
   description:
     'Chengdu Qianxi Packaging Materials Co., Ltd. — Factory-direct custom corrugated boxes. 3-layer, 5-layer, heavy-duty, and custom printed packaging solutions with global shipping.',
   description_short:
-    'Factory-direct custom corrugated boxes from China. ISO certified, free sampling, 24/7 support.',
+    'Factory-direct custom corrugated boxes from China. FSC®-certified material, free sampling, 24/7 support.',
   url: 'https://qianxipack.com',
   author: 'Whereby',
 };
@@ -61,7 +61,7 @@ export const OG = {
   url: SITE.url,
   title: `${SITE.title} — Factory Direct Corrugated Box Manufacturer`,
   description:
-    'Custom corrugated boxes from Chengdu Qianxi Packaging. ISO certified factory, free sampling, 24-hour quotation. 3-layer, 5-layer, heavy-duty, and custom printed boxes for global export.',
+    'Custom corrugated boxes from Chengdu Qianxi Packaging. FSC®-certified material, free sampling, 24-hour quotation. 3-layer, 5-layer, heavy-duty, and custom printed boxes for global export.',
   image: ogImageSrc,
 };
 
