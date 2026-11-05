@@ -82,6 +82,14 @@ export interface SiteTranslations {
     sizeNotice: string;
     regionNotice: string;
     tableNotice: string;
+    areaNotice: string;
+    tableGrammage: string;
+    grammageUnit: string;
+    grammagePresetsLabel: string;
+    grammageCustomLabel: string;
+    grammageApply: string;
+    grammageCancel: string;
+    grammageInvalid: string;
     tablePrice: string;
     pricingNote: string;
     viewPriceList: string;
@@ -112,6 +120,8 @@ export interface SiteTranslations {
     layer7: string;
     typeLabel: string;
     typePlaceholder: string;
+    grammageLabel: string;
+    grammagePlaceholder: string;
     materialLabel: string;
     materialOption1: string;
     materialOption2: string;

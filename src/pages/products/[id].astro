@@ -2,6 +2,7 @@
 import MainLayout from '@/layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import { getTranslations } from '@/i18n/utils';
+import { blankAreaM2, pricePerPiece, formatPrice } from '@utils/boxPricing';
 import pricing3Layer from '@data/pricing/3-layer.json';
 import pricing5Layer from '@data/pricing/5-layer.json';
 import pricing7Layer from '@data/pricing/7-layer.json';
@@ -28,6 +29,27 @@ const slug = product.id.replace(/^en\//, '');
 const pricing = pricingBySlug[slug];
 const layerNum = slug.charAt(0);
 const quoteUrl = `${base}/quote?layer=${layerNum}`;
+
+// Pricing parameters (see src/utils/boxPricing.ts)
+const params = {
+  jointMm: pricing?.jointMm ?? 38,
+  yieldRate: pricing?.yieldRate ?? 0.85,
+  processPerPiece: pricing?.processPerPiece ?? 0.055,
+  marginRate: pricing?.marginRate ?? 0.12,
+  referenceGrammage: pricing?.referenceGrammage ?? 150,
+};
+
+const priceCell = (rate: number, dims: number[], factor: number) => {
+  const area = blankAreaM2(dims, params.jointMm);
+  const value = pricePerPiece({
+    areaM2: area,
+    ratePerM2: rate,
+    grammage: params.referenceGrammage,
+    tierFactor: factor,
+    params,
+  });
+  return formatPrice(value, pricing?.currency ?? 'EUR');
+};
 ---
 
 <MainLayout>
@@ -53,6 +75,7 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
           <ul class="space-y-2 text-sm leading-relaxed text-amber-900">
             <li class="flex gap-2"><span class="font-bold">•</span><span>{t.products.sizeNotice}</span></li>
             <li class="flex gap-2"><span class="font-bold">•</span><span>{t.products.regionNotice}</span></li>
+            <li class="flex gap-2"><span class="font-bold">•</span><span>{t.products.areaNotice}</span></li>
           </ul>
         </div>
       )}
@@ -72,9 +95,23 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
         </div>
       )}
 
-      <!-- Price lists: one table per flute type -->
+      <!-- Price lists: one table per flute type, grammage switchable from the header -->
       {pricing && (
-        <div class="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
+        <div
+          id="pricing-root"
+          class="rounded-xl border border-gray-200 bg-white p-6 sm:p-8"
+          data-cur={pricing.currency}
+          data-unit={t.products.grammageUnit}
+          data-gref={params.referenceGrammage}
+          data-presets={pricing.grammagePresets.join(',')}
+          data-min={pricing.grammageRange.min}
+          data-max={pricing.grammageRange.max}
+          data-step={pricing.grammageRange.step}
+          data-joint={params.jointMm}
+          data-yield={params.yieldRate}
+          data-process={params.processPerPiece}
+          data-margin={params.marginRate}
+        >
           <h2 class="mb-6 text-2xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
             {t.products.priceListTitle}
           </h2>
@@ -90,10 +127,25 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
               </h3>
               <p class="mb-2 text-xs font-medium text-amber-800">{t.products.tableNotice}</p>
               <div class="overflow-x-auto">
-                <table class="w-full min-w-[640px] border-collapse text-sm">
+                <table class="w-full min-w-[720px] border-collapse text-sm">
                   <thead>
                     <tr class="bg-primary-900 text-white">
                       <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">{t.products.tableSize}</th>
+                      <th class="px-4 py-2.5 text-left font-semibold whitespace-nowrap">
+                        <div class="flex items-center gap-2">
+                          <span>{t.products.tableGrammage}</span>
+                          <button
+                            type="button"
+                            class="grammage-trigger inline-flex items-center gap-1 rounded-md border border-white/40 px-2 py-0.5 text-xs font-semibold transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-white"
+                            aria-expanded="false"
+                            aria-haspopup="dialog"
+                          >
+                            <span class="grammage-value">{params.referenceGrammage}</span>
+                            <span>{t.products.grammageUnit}</span>
+                            <span aria-hidden="true">▾</span>
+                          </button>
+                        </div>
+                      </th>
                       {pricing.tiers.map(tier => (
                         <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">{tier.en}</th>
                       ))}
@@ -101,11 +153,14 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
                   </thead>
                   <tbody>
                     {type.rows.map((row, i) => (
-                      <tr class={i % 2 === 1 ? 'bg-gray-50' : ''}>
+                      <tr data-dims={row.dims.join(',')} data-rate={type.ratePerM2} class={i % 2 === 1 ? 'bg-gray-50' : ''}>
                         <td class="px-4 py-3 font-medium text-primary-800 whitespace-nowrap">{row.size}</td>
-                        {row.prices.map(price => (
-                          <td class="px-4 py-3 text-right font-semibold text-gray-800 whitespace-nowrap">
-                            {pricing.currency} {price}
+                        <td class="grammage-cell px-4 py-3 text-gray-600 whitespace-nowrap">
+                          {params.referenceGrammage} {t.products.grammageUnit}
+                        </td>
+                        {pricing.tiers.map(tier => (
+                          <td class="price-cell px-4 py-3 text-right font-semibold text-gray-800 whitespace-nowrap" data-factor={tier.factor}>
+                            {priceCell(type.ratePerM2, row.dims, tier.factor)}
                           </td>
                         ))}
                       </tr>
@@ -117,6 +172,38 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
           ))}
 
           <p class="mt-4 text-xs text-gray-500">{t.products.pricingNote}</p>
+
+          <!-- Grammage picker (fixed-position so the table's overflow container cannot clip it) -->
+          <div
+            id="grammage-panel"
+            class="fixed z-50 hidden w-72 rounded-xl border border-gray-200 bg-white p-4 shadow-2xl"
+            role="dialog"
+            aria-label={t.products.tableGrammage}
+          >
+            <p class="mb-2 text-xs font-semibold text-gray-600">{t.products.grammagePresetsLabel}</p>
+            <div id="grammage-presets" class="mb-4 flex flex-wrap gap-2"></div>
+            <p class="mb-1 text-xs font-semibold text-gray-600">{t.products.grammageCustomLabel}</p>
+            <div class="flex items-center gap-2">
+              <input
+                id="grammage-input"
+                type="number"
+                min={pricing.grammageRange.min}
+                max={pricing.grammageRange.max}
+                step={pricing.grammageRange.step}
+                class="w-full rounded-lg border-gray-300 px-3 py-1.5 text-sm focus:border-primary-500 focus:ring-primary-500"
+              />
+              <span class="shrink-0 text-xs text-gray-500">{t.products.grammageUnit}</span>
+            </div>
+            <p id="grammage-error" class="mt-1 hidden text-xs text-red-600">{t.products.grammageInvalid}</p>
+            <div class="mt-3 flex justify-end gap-2">
+              <button type="button" id="grammage-cancel" class="rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-600 transition hover:bg-gray-100">
+                {t.products.grammageCancel}
+              </button>
+              <button type="button" id="grammage-apply" class="rounded-lg bg-accent-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-accent-700">
+                {t.products.grammageApply}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -149,3 +236,138 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
     </div>
   </section>
 </MainLayout>
+
+<script>
+  import { blankAreaM2, pricePerPiece, formatPrice } from '@utils/boxPricing';
+
+  const root = document.getElementById('pricing-root') as HTMLElement | null;
+  if (root) {
+    const currency = root.dataset.cur || 'EUR';
+    const unit = root.dataset.unit || 'g/m²';
+    const gref = Number(root.dataset.gref || 150);
+    const presets = (root.dataset.presets || '')
+      .split(',')
+      .map(Number)
+      .filter(n => n > 0);
+    const min = Number(root.dataset.min || 80);
+    const max = Number(root.dataset.max || 300);
+    const step = Number(root.dataset.step || 5);
+    const params = {
+      jointMm: Number(root.dataset.joint || 38),
+      yieldRate: Number(root.dataset.yield || 0.85),
+      processPerPiece: Number(root.dataset.process || 0.055),
+      marginRate: Number(root.dataset.margin || 0.12),
+      referenceGrammage: gref,
+    };
+
+    let current = gref;
+
+    const panel = document.getElementById('grammage-panel');
+    const presetsBox = document.getElementById('grammage-presets');
+    const input = document.getElementById('grammage-input') as HTMLInputElement | null;
+    const errorEl = document.getElementById('grammage-error');
+    const applyBtn = document.getElementById('grammage-apply');
+    const cancelBtn = document.getElementById('grammage-cancel');
+    const triggers = Array.from(root.querySelectorAll<HTMLButtonElement>('.grammage-trigger'));
+
+    function render(grammage: number) {
+      root!.querySelectorAll<HTMLTableRowElement>('tbody tr').forEach(tr => {
+        const dims = (tr.dataset.dims || '').split(',').map(Number);
+        const rate = Number(tr.dataset.rate || 0);
+        const area = blankAreaM2(dims, params.jointMm);
+        tr.querySelectorAll<HTMLTableCellElement>('.price-cell').forEach(td => {
+          const factor = Number(td.dataset.factor || 1);
+          const value = pricePerPiece({ areaM2: area, ratePerM2: rate, grammage, tierFactor: factor, params });
+          td.textContent = formatPrice(value, currency);
+        });
+        const cell = tr.querySelector<HTMLElement>('.grammage-cell');
+        if (cell) cell.textContent = `${grammage} ${unit}`;
+      });
+      root!.querySelectorAll<HTMLElement>('.grammage-value').forEach(el => {
+        el.textContent = String(grammage);
+      });
+      presetsBox?.querySelectorAll<HTMLButtonElement>('button').forEach(btn => {
+        const active = Number(btn.dataset.g) === grammage;
+        btn.classList.toggle('bg-accent-600', active);
+        btn.classList.toggle('border-accent-600', active);
+        btn.classList.toggle('text-white', active);
+        btn.classList.toggle('bg-white', !active);
+        btn.classList.toggle('border-gray-300', !active);
+        btn.classList.toggle('text-gray-700', !active);
+      });
+    }
+
+    function openPanel(trigger: HTMLButtonElement) {
+      if (!panel) return;
+      panel.classList.remove('hidden');
+      if (input) input.value = String(current);
+      errorEl?.classList.add('hidden');
+      const rect = trigger.getBoundingClientRect();
+      const pw = panel.offsetWidth || 288;
+      const ph = panel.offsetHeight || 220;
+      const left = Math.max(12, Math.min(rect.left, window.innerWidth - pw - 12));
+      let top = rect.bottom + 8;
+      if (top + ph > window.innerHeight - 12) top = Math.max(12, rect.top - ph - 8);
+      panel.style.left = `${left}px`;
+      panel.style.top = `${top}px`;
+      trigger.setAttribute('aria-expanded', 'true');
+      input?.focus();
+      input?.select();
+    }
+
+    function closePanel() {
+      panel?.classList.add('hidden');
+      triggers.forEach(tr => tr.setAttribute('aria-expanded', 'false'));
+    }
+
+    function apply(value: number) {
+      current = value;
+      render(current);
+      closePanel();
+    }
+
+    triggers.forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        openPanel(btn);
+      });
+    });
+
+    presets.forEach(p => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.dataset.g = String(p);
+      btn.textContent = `${p} ${unit}`;
+      btn.className = 'rounded-full border px-3 py-1 text-xs font-semibold transition';
+      btn.addEventListener('click', () => apply(p));
+      presetsBox?.appendChild(btn);
+    });
+
+    applyBtn?.addEventListener('click', () => {
+      const raw = Number(input?.value);
+      const value = Math.round(raw / step) * step;
+      if (!Number.isFinite(value) || value < min || value > max) {
+        errorEl?.classList.remove('hidden');
+        return;
+      }
+      apply(value);
+    });
+
+    cancelBtn?.addEventListener('click', closePanel);
+
+    document.addEventListener('click', e => {
+      if (!panel || panel.classList.contains('hidden')) return;
+      const target = e.target as Node;
+      if (panel.contains(target) || triggers.some(tr => tr.contains(target))) return;
+      closePanel();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closePanel();
+    });
+
+    window.addEventListener('resize', closePanel);
+
+    render(current);
+  }
+</script>
