@@ -78,8 +78,10 @@ export interface SiteTranslations {
     tableSize: string;
     tableType: string;
     typeNavLabel: string;
+    noticeTitle: string;
     sizeNotice: string;
     regionNotice: string;
+    tableNotice: string;
     tablePrice: string;
     pricingNote: string;
     viewPriceList: string;

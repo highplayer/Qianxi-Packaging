@@ -39,6 +39,24 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
         <p class="text-lg leading-relaxed text-gray-600">{data.main.content}</p>
       </div>
 
+      <!-- Prominent notices: placed before the type nav so nobody can skip them -->
+      {pricing && (
+        <div class="mb-8 rounded-xl border-2 border-amber-300 bg-amber-50 p-5">
+          <p class="mb-3 flex items-center gap-2 text-base font-bold text-amber-900" style="font-family: var(--font-heading);">
+            <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
+            {t.products.noticeTitle}
+          </p>
+          <ul class="space-y-2 text-sm leading-relaxed text-amber-900">
+            <li class="flex gap-2"><span class="font-bold">•</span><span>{t.products.sizeNotice}</span></li>
+            <li class="flex gap-2"><span class="font-bold">•</span><span>{t.products.regionNotice}</span></li>
+          </ul>
+        </div>
+      )}
+
       <!-- Type jump navigation -->
       {pricing && (
         <div class="mb-10 flex flex-wrap items-center gap-2 border-y border-gray-200 py-4">
@@ -61,16 +79,6 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
             {t.products.priceListTitle}
           </h2>
 
-          <!-- Notices: outer dimensions + Eastern Europe pricing -->
-          <div class="mb-8 space-y-3">
-            <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-relaxed text-amber-900">
-              {t.products.sizeNotice}
-            </div>
-            <div class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-xs leading-relaxed text-sky-900">
-              {t.products.regionNotice}
-            </div>
-          </div>
-
           {pricing.types.map(type => (
             <div class="mb-10 last:mb-0">
               <h3
@@ -80,6 +88,7 @@ const quoteUrl = `${base}/quote?layer=${layerNum}`;
               >
                 {t.products.tableType} {type.code}
               </h3>
+              <p class="mb-2 text-xs font-medium text-amber-800">{t.products.tableNotice}</p>
               <div class="overflow-x-auto">
                 <table class="w-full min-w-[640px] border-collapse text-sm">
                   <thead>
