@@ -1,0 +1,25 @@
+{
+  "source": "资阳华盛达包装科技有限公司 纸板报价表 2026-10-09",
+  "currency": "CNY",
+  "liners": [
+    { "id": "8", "zh": "再生偏板 90g", "en": "Recycled liner 90g", "price": 0.3 },
+    { "id": "N", "zh": "再生偏板 120g", "en": "Recycled liner 120g", "price": 0.4 },
+    { "id": "A", "zh": "江牛卡 135g", "en": "Jiang kraft 135g", "price": 0.48 },
+    { "id": "K", "zh": "A级牛卡 140g", "en": "Grade-A kraft 140g", "price": 0.55 },
+    { "id": "L", "zh": "A级牛卡 170g", "en": "Grade-A kraft 170g", "price": 0.66 },
+    { "id": "M", "zh": "地龙牛卡 180g", "en": "Dragon kraft 180g", "price": 0.66 }
+  ],
+  "mediums": [
+    { "id": "3", "zh": "高瓦 90g（L）", "en": "Medium 90g (L)", "prices": { "E": 0.29, "B": 0.31, "C": 0.33 } },
+    { "id": "4", "zh": "高瓦 90g（H）", "en": "Medium 90g (H)", "prices": { "E": 0.38, "B": 0.39, "C": 0.42 } },
+    { "id": "5", "zh": "高瓦 100g", "en": "Medium 100g", "prices": { "E": 0.45, "B": 0.49, "C": 0.52 } },
+    { "id": "6", "zh": "高瓦 120g", "en": "Medium 120g", "prices": { "E": 0.52, "B": 0.55, "C": 0.57 } },
+    { "id": "8", "zh": "高瓦 140g", "en": "Medium 140g", "prices": { "E": 0.59, "B": 0.62, "C": 0.66 } },
+    { "id": "9", "zh": "高瓦 160g", "en": "Medium 160g", "prices": { "E": 0.65, "B": 0.68, "C": 0.75 } }
+  ],
+  "boardProcessing": { "3": 0.28, "4": 0.33, "5": 0.35, "7": 0.45 },
+  "smallOrder": {
+    "under150": { "3": 0.25, "4": 0.25, "5": 0.3, "7": 0.35 },
+    "under300": { "3": 0.15, "4": 0.2, "5": 0.2, "7": 0.25 }
+  }
+}

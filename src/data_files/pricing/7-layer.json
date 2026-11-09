@@ -2,57 +2,29 @@
   "currency": "EUR",
   "jointMm": 38,
   "yieldRate": 0.85,
-  "processPerPiece": 0.055,
-  "marginRate": 0.12,
-  "referenceGrammage": 150,
-  "grammagePresets": [125, 150, 175, 200],
-  "grammageRange": { "min": 80, "max": 300, "step": 5 },
+  "otherCostFactor": 1.25,
+  "cnyToEur": 0.128,
+  "eurPerUsd": 0.93,
+  "container": { "costUsd": 9500, "volumeM3": 76, "fillRate": 0.85 },
+  "customsPerBox": 0,
+  "agentFeeRate": 0.015,
+  "boardThicknessMm": { "3": 3, "5": 7, "7": 11 },
+  "modes": {
+    "delivered": { "freight": true, "customs": true, "agentFee": true, "margin": 0.25 },
+    "exw": { "freight": false, "customs": false, "agentFee": false, "margin": 0.3 }
+  },
+  "defaultMode": "delivered",
   "tiers": [
-    { "zh": "最多 119 个", "en": "Up to 119 pcs", "factor": 1.1 },
-    { "zh": "120 个起", "en": "From 120 pcs", "factor": 1.0 },
-    { "zh": "240 个起", "en": "From 240 pcs", "factor": 0.95 },
-    { "zh": "480 个起", "en": "From 480 pcs", "factor": 0.9 }
+    { "zh": "最多 119 个", "en": "Up to 119 pcs", "qty": 119 },
+    { "zh": "120 个起", "en": "From 120 pcs", "qty": 200 },
+    { "zh": "240 个起", "en": "From 240 pcs", "qty": 400 },
+    { "zh": "480 个起", "en": "From 480 pcs", "qty": 800 }
   ],
-  "types": [
-    {
-      "code": "BAB",
-      "ratePerM2": 2.05,
-      "rows": [
-        { "size": "600 × 400 × 400", "dims": [600, 400, 400] },
-        { "size": "800 × 600 × 500", "dims": [800, 600, 500] },
-        { "size": "1000 × 800 × 600", "dims": [1000, 800, 600] },
-        { "size": "1200 × 800 × 800", "dims": [1200, 800, 800] }
-      ]
-    },
-    {
-      "code": "BAA",
-      "ratePerM2": 2.12,
-      "rows": [
-        { "size": "600 × 400 × 400", "dims": [600, 400, 400] },
-        { "size": "800 × 600 × 500", "dims": [800, 600, 500] },
-        { "size": "1000 × 800 × 600", "dims": [1000, 800, 600] },
-        { "size": "1200 × 800 × 800", "dims": [1200, 800, 800] }
-      ]
-    },
-    {
-      "code": "CAC",
-      "ratePerM2": 2.08,
-      "rows": [
-        { "size": "600 × 400 × 400", "dims": [600, 400, 400] },
-        { "size": "800 × 600 × 500", "dims": [800, 600, 500] },
-        { "size": "1000 × 800 × 600", "dims": [1000, 800, 600] },
-        { "size": "1200 × 800 × 800", "dims": [1200, 800, 800] }
-      ]
-    },
-    {
-      "code": "BAC",
-      "ratePerM2": 2.16,
-      "rows": [
-        { "size": "600 × 400 × 400", "dims": [600, 400, 400] },
-        { "size": "800 × 600 × 500", "dims": [800, 600, 500] },
-        { "size": "1000 × 800 × 600", "dims": [1000, 800, 600] },
-        { "size": "1200 × 800 × 800", "dims": [1200, 800, 800] }
-      ]
-    }
-  ]
+  "materialPresets": [
+    { "id": "eco", "zh": "经济：A/A/A + 高瓦100g", "en": "Eco: A/A/A + 100g", "liner": "A", "medium": "5" },
+    { "id": "std", "zh": "标准：K/K/K + 高瓦120g", "en": "Standard: K/K/K + 120g", "liner": "K", "medium": "6" },
+    { "id": "pro", "zh": "加强：L/L/L + 高瓦140g", "en": "Heavy: L/L/L + 140g", "liner": "L", "medium": "8" }
+  ],
+  "defaultPreset": "std",
+  "types": []
 }

@@ -10,7 +10,7 @@ interface Props { t: SiteTranslations; }
 const typeMap: Record<string, string[]> = {
   '3': pricing3Layer.types.map(x => x.code),
   '5': pricing5Layer.types.map(x => x.code),
-  '7': pricing7Layer.types.map(x => x.code),
+  '7': (pricing7Layer.types as { code: string }[]).map(x => x.code),
 };
 ---
 <div class="rounded-xl border border-gray-200 bg-white p-8">
@@ -214,6 +214,13 @@ const typeMap: Record<string, string[]> = {
   if (layerParam && layerSelect && ['3', '5', '7'].includes(layerParam)) {
     layerSelect.value = layerParam;
     refreshTypeOptions();
+  }
+
+  // Arriving from a product page in "ex-works" mode: preselect the forwarder option
+  const shippingParam = urlParams.get('shipping');
+  if (shippingParam) {
+    const radio = form.querySelector<HTMLInputElement>(`input[name="shipping"][value="${shippingParam}"]`);
+    if (radio) radio.checked = true;
   }
 
   // Show custom quantity input when "custom" is selected
