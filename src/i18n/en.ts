@@ -185,8 +185,8 @@ const en: SiteTranslations = {
     phoneLabel2: 'Phone',
     whatsappLabel: 'WhatsApp',
     successTitle: 'Thank You!',
-    successMessage: 'Your inquiry has been received. We will reply within 24 hours.',
-    errorMessage: 'Something went wrong. Please try emailing us directly.',
+    successMessage: 'Your inquiry has been received. We will reply within 24 hours. If you do not hear from us, please email wmz85474491@gmail.com or WhatsApp +852 5284 7430.',
+    errorMessage: 'Your enquiry may not have been sent. Please email us directly at wmz85474491@gmail.com or WhatsApp +852 5284 7430.',
   },
   contactPage: {
     title: 'Contact Us',

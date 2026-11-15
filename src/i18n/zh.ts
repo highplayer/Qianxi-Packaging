@@ -185,8 +185,8 @@ const zh: SiteTranslations = {
     phoneLabel2: '电话',
     whatsappLabel: 'WhatsApp',
     successTitle: '谢谢！',
-    successMessage: '您的询盘已收到。我们将在 24 小时内回复。',
-    errorMessage: '提交出错。请尝试直接发送邮件给我们。',
+    successMessage: '您的询盘已收到。我们将在 24 小时内回复。如未收到回复，请邮件 wmz85474491@gmail.com 或 WhatsApp +852 5284 7430。',
+    errorMessage: '您的询价可能未发送成功。请直接邮件 wmz85474491@gmail.com 或 WhatsApp +852 5284 7430 联系我们。',
   },
   contactPage: {
     title: '联系我们',
