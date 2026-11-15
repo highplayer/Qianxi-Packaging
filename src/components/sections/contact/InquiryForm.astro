@@ -3,14 +3,22 @@ import type { SiteTranslations } from '@/i18n/types';
 import pricing3Layer from '@data/pricing/3-layer.json';
 import pricing5Layer from '@data/pricing/5-layer.json';
 import pricing7Layer from '@data/pricing/7-layer.json';
-const { t } = Astro.props;
-interface Props { t: SiteTranslations; }
+const { t, lang = 'en' } = Astro.props;
+interface Props { t: SiteTranslations; lang?: string; }
 
-// Flute codes come from the price-list data so the form never drifts from the tables.
+// Flute codes and material presets come from the price-list data so the form
+// never drifts from the product pages.
 const typeMap: Record<string, string[]> = {
   '3': pricing3Layer.types.map(x => x.code),
   '5': pricing5Layer.types.map(x => x.code),
   '7': (pricing7Layer.types as { code: string }[]).map(x => x.code),
+};
+
+type Preset = { id: string; zh: string; en: string };
+const presetMap: Record<string, Preset[]> = {
+  '3': pricing3Layer.materialPresets.map(p => ({ id: p.id, zh: p.zh, en: p.en })),
+  '5': pricing5Layer.materialPresets.map(p => ({ id: p.id, zh: p.zh, en: p.en })),
+  '7': (pricing7Layer.materialPresets as Preset[]).map(p => ({ id: p.id, zh: p.zh, en: p.en })),
 };
 ---
 <div class="rounded-xl border border-gray-200 bg-white p-8">
@@ -124,13 +132,18 @@ const typeMap: Record<string, string[]> = {
         </select>
       </div>
       <div>
-        <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.grammageLabel}</label>
-        <div class="flex items-center gap-2">
-          <input type="number" name="grammage" min="80" max="300" step="5" value="150"
-            placeholder={t.contact.grammagePlaceholder}
-            class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" />
-          <span class="shrink-0 text-xs text-gray-500">g/m²</span>
-        </div>
+        <label class="mb-1 block text-xs font-semibold text-gray-700">{t.contact.materialLabel}</label>
+        <select
+          name="material"
+          id="material-select"
+          data-presets={JSON.stringify(presetMap)}
+          data-lang={lang}
+          data-placeholder={t.contact.materialPlaceholder}
+          data-notsure={t.contact.materialNotSure}
+          class="w-full rounded-lg border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500"
+        >
+          <option value="">{t.contact.materialPlaceholder}</option>
+        </select>
       </div>
     </div>
 
@@ -223,27 +236,51 @@ const typeMap: Record<string, string[]> = {
     if (el && !el.value) el.value = value;
   });
 
-  // Flute type options depend on the selected layer
+  // Flute types and material presets both depend on the selected layer
   const layerSelect = document.getElementById('layer-select') as HTMLSelectElement | null;
   const typeSelect = document.getElementById('type-select') as HTMLSelectElement | null;
+  const materialSelect = document.getElementById('material-select') as HTMLSelectElement | null;
   const flutes = typeSelect ? (JSON.parse(typeSelect.dataset.flutes || '{}') as Record<string, string[]>) : {};
   const typePlaceholder = typeSelect?.dataset.placeholder || '';
+  const presets = materialSelect
+    ? (JSON.parse(materialSelect.dataset.presets || '{}') as Record<string, { id: string; zh: string; en: string }[]>)
+    : {};
+  const materialPlaceholder = materialSelect?.dataset.placeholder || '';
+  const materialNotSure = materialSelect?.dataset.notsure || '';
+  const formLang = materialSelect?.dataset.lang || 'en';
 
-  function refreshTypeOptions() {
-    if (!layerSelect || !typeSelect) return;
-    const list = flutes[layerSelect.value] || [];
-    typeSelect.innerHTML = '';
-    typeSelect.add(new Option(typePlaceholder, ''));
-    list.forEach((code: string) => typeSelect.add(new Option(code, code)));
+  function refreshOptions() {
+    const layer = layerSelect?.value || '';
+
+    if (typeSelect) {
+      const list = flutes[layer] || [];
+      typeSelect.innerHTML = '';
+      typeSelect.add(new Option(typePlaceholder, ''));
+      list.forEach((code: string) => typeSelect.add(new Option(code, code)));
+    }
+
+    if (materialSelect) {
+      const list = presets[layer] || [];
+      materialSelect.innerHTML = '';
+      materialSelect.add(new Option(materialPlaceholder, ''));
+      list.forEach(p => {
+        const label = formLang === 'zh' ? p.zh : p.en;
+        materialSelect.add(new Option(label, label));
+      });
+      if (list.length && materialNotSure) {
+        materialSelect.add(new Option(materialNotSure, materialNotSure));
+      }
+    }
   }
-  layerSelect?.addEventListener('change', refreshTypeOptions);
 
-  // Arriving from a product page: preselect the layer and populate its types
+  layerSelect?.addEventListener('change', refreshOptions);
+
+  // Arriving from a product page: preselect the layer, then fill both selects
   const layerParam = urlParams.get('layer');
   if (layerParam && layerSelect && ['3', '5', '7'].includes(layerParam)) {
     layerSelect.value = layerParam;
-    refreshTypeOptions();
   }
+  refreshOptions();
 
   // Arriving from a product page in "ex-works" mode: preselect the forwarder option
   const shippingParam = urlParams.get('shipping');

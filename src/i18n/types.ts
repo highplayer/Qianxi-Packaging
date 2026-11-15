@@ -141,6 +141,8 @@ export interface SiteTranslations {
     layer7: string;
     typeLabel: string;
     typePlaceholder: string;
+    materialPlaceholder: string;
+    materialNotSure: string;
     grammageLabel: string;
     grammagePlaceholder: string;
     materialLabel: string;

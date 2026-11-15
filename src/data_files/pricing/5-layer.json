@@ -21,9 +21,9 @@
     { "zh": "480 个起", "en": "From 480 pcs", "qty": 800 }
   ],
   "materialPresets": [
-    { "id": "eco", "zh": "经济：A/A + 高瓦100g", "en": "Eco: A/A + 100g", "liner": "A", "medium": "5" },
-    { "id": "std", "zh": "标准：K/K + 高瓦120g", "en": "Standard: K/K + 120g", "liner": "K", "medium": "6" },
-    { "id": "pro", "zh": "加强：L/L + 高瓦140g", "en": "Heavy: L/L + 140g", "liner": "L", "medium": "8" }
+    { "id": "eco", "zh": "经济：A/A/A + 高瓦100g", "en": "Eco: A/A/A + 100g", "liner": "A", "medium": "5" },
+    { "id": "std", "zh": "标准：K/K/K + 高瓦120g", "en": "Standard: K/K/K + 120g", "liner": "K", "medium": "6" },
+    { "id": "pro", "zh": "加强：L/L/L + 高瓦140g", "en": "Heavy: L/L/L + 140g", "liner": "L", "medium": "8" }
   ],
   "defaultPreset": "std",
   "types": [
