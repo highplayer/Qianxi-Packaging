@@ -11,7 +11,7 @@
     },
     {
       "question": "Which trade terms do you support?",
-      "answer": "We can work on EXW, FOB, CIF and DDP terms. If you have your own forwarder in China we quote ex-works; otherwise we can quote a delivered price including freight."
+      "answer": "We can work on EXW, FCA, CIP and DDP terms. If you have your own forwarder in China we quote ex-works; otherwise we can quote a delivered price including freight."
     },
     {
       "question": "How are the goods shipped?",
