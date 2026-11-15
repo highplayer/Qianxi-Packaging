@@ -4,8 +4,11 @@ import HeroSection from '@components/sections/home/HeroSection.astro';
 import WhyChooseUs from '@components/sections/home/WhyChooseUs.astro';
 import ProductShowcase from '@components/sections/home/ProductShowcase.astro';
 import FscCert from '@components/sections/misc/FscCert.astro';
+import IndustriesWeServe from '@components/sections/home/IndustriesWeServe.astro';
 import FactorySnapshot from '@components/sections/home/FactorySnapshot.astro';
 import ProductionLine from '@components/sections/home/ProductionLine.astro';
+import QualityControl from '@components/sections/home/QualityControl.astro';
+import CustomProcess from '@components/sections/home/CustomProcess.astro';
 import CTASection from '@components/sections/home/CTASection.astro';
 import FAQ from '@components/sections/misc/FAQ.astro';
 import { getTranslations } from '@/i18n/utils';
@@ -16,11 +19,14 @@ const t = getTranslations('en');
 
 <MainLayout>
   <HeroSection t={t} lang="en" />
-  <WhyChooseUs t={t} />
   <ProductShowcase t={t} />
+  <WhyChooseUs t={t} />
   <FscCert lang="en" variant="compact" />
+  <IndustriesWeServe lang="en" />
   <FactorySnapshot t={t} lang="en" />
   <ProductionLine lang="en" />
+  <QualityControl lang="en" />
+  <CustomProcess lang="en" />
   <CTASection t={t} lang="en" />
   <FAQ title={t.home.faqTitle} faqs={allFaqs} />
 </MainLayout>

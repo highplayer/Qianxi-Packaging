@@ -1,0 +1,65 @@
+---
+const { lang = 'en' } = Astro.props;
+interface Props { lang?: string }
+const isZh = lang === 'zh';
+
+const steps = [
+  {
+    zh: '提交询价',
+    en: 'Send your enquiry',
+    descZh: '告诉我们纸箱尺寸、数量、印刷要求与目的地（或是否自有货代）。',
+    descEn: 'Tell us the sizes, quantities, printing requirements and destination — or whether you use your own forwarder.',
+  },
+  {
+    zh: '方案与报价',
+    en: 'Specification & quotation',
+    descZh: '我们按用途与承重建议层数、楞型与配纸，并给出到岸价或出厂价。',
+    descEn: 'We recommend ply count, flute and paper grade for your use and load, then quote either delivered or ex-works.',
+  },
+  {
+    zh: '打样确认',
+    en: 'Sample confirmation',
+    descZh: '定制样品收费 €100（含空运），下正式订单后从订单总额中扣除。',
+    descEn: 'Custom samples cost €100 including air freight, credited back on your production order.',
+  },
+  {
+    zh: '批量生产',
+    en: 'Production',
+    descZh: '确认图纸与样品后安排生产，按工序节点做过程检查。',
+    descEn: 'Once drawings and samples are confirmed, production is scheduled with in-process checks.',
+  },
+  {
+    zh: '验货与出运',
+    en: 'Inspection & shipping',
+    descZh: '出货前抽检并可按需安排运输；若为出厂价，则由您的货代提货。',
+    descEn: 'Final inspection before dispatch. We can arrange shipping, or hand over to your forwarder on ex-works terms.',
+  },
+];
+---
+
+<section class="py-20">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="mb-4 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
+      {isZh ? '定制流程' : 'Custom Packaging Process'}
+    </h2>
+    <p class="mx-auto mb-12 max-w-3xl text-center text-gray-600">
+      {isZh
+        ? '从第一次询价到出货，流程如下；具体时间节点在确认规格后与你逐项确认。'
+        : 'From first enquiry to dispatch — timelines are confirmed with you once specifications are fixed.'}
+    </p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+      {steps.map((step, i) => (
+        <div class="rounded-xl border border-gray-200 bg-white p-6">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-accent-600 text-sm font-bold text-white">
+            {i + 1}
+          </div>
+          <h3 class="mb-2 text-base font-bold text-primary-800" style="font-family: var(--font-heading);">
+            {isZh ? step.zh : step.en}
+          </h3>
+          <p class="text-xs leading-relaxed text-gray-600">{isZh ? step.descZh : step.descEn}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

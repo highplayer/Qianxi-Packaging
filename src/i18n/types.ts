@@ -21,7 +21,9 @@ export interface SiteTranslations {
   home: {
     heroTitle: string;
     heroSubtitle: string;
+    heroIntro: string;
     heroCTA: string;
+    heroCTA2: string;
     trustCard1Title: string;
     trustCard1Desc: string;
     trustCard2Title: string;
@@ -101,6 +103,15 @@ export interface SiteTranslations {
     pricingNote: string;
     viewPriceList: string;
     detailSpecs: string;
+    specStructure: string;
+    specFlute: string;
+    specMaterial: string;
+    specSize: string;
+    specPrinting: string;
+    specIndustries: string;
+    printingTitle: string;
+    printingDesc: string;
+    listPrintingNote: string;
     detailApplications: string;
     detailCustomOptions: string;
     detailRequestQuote: string;
@@ -110,8 +121,11 @@ export interface SiteTranslations {
     formTitle: string;
     formSubtitle: string;
     nameLabel: string;
+    companyLabel: string;
     emailLabel: string;
     phoneLabel: string;
+    countryLabel: string;
+    cityLabel: string;
     boxSpecs: string;
     lengthLabel: string;
     widthLabel: string;
@@ -150,6 +164,9 @@ export interface SiteTranslations {
     shippingOwnForwarder: string;
     shippingNote: string;
     messageLabel: string;
+    designLinkLabel: string;
+    designLinkPlaceholder: string;
+    designLinkNote: string;
     messagePlaceholder: string;
     recaptchaNotice: string;
     submitBtn: string;

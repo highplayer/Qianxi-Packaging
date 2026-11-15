@@ -5,15 +5,21 @@ category: "3-Layer"
 usage: "ecommerce"
 main:
   id: 1
-  content: "Standard single-wall boxes available in A, B, or C flute. Ideal for everyday shipping and e-commerce packaging needs."
+  content: "Single-wall corrugated boxes made from one fluted medium sandwiched between two liners. Available in B, C or E flute, with paper grades selected to suit the product weight and transport conditions."
   imgAlt: "Stack of 3-layer corrugated boxes"
 specs:
-  material: "Kraft / Test Liner"
-  fluteType: "A / B / C Flute"
+  material: "Kraft / Test liner, 90–180 g/m² (selected per requirement)"
+  fluteType: "B / C / E Flute"
+  structure: "Single wall — liner + fluted medium + liner"
+  printing: "1–4 colour flexo printing available"
+  industries:
+    - "E-commerce & parcel shipping"
+    - "Food & beverage"
+    - "Electronics & small appliances"
+    - "Textile & garment"
   burstStrength: "≥ 1200 kPa (ISO 2759)"
   edgeCrush: "≥ 4.5 kN/m (ISO 3037)"
-  sizeRange: "Custom — any dimension"
-  moq: "500 pcs"
+  sizeRange: "Custom — dimensions made to order"
 applications:
   - "E-commerce parcel shipping"
   - "Moving and relocation boxes"
@@ -21,7 +27,7 @@ applications:
   - "Document archive boxes"
 customOptions:
   - "Custom dimensions (any size)"
-  - "1-2 color flexo printing"
+  - "1–4 colour flexo printing"
   - "Die-cut handles and vents"
   - "Water-resistant coating"
 ---

@@ -27,12 +27,19 @@ const typeMap: Record<string, string[]> = {
       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
       <input type="text" name="botcheck" tabindex="-1" autocomplete="off" />
     </div>
-    <!-- Name -->
-    <div>
-      <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.nameLabel}</label>
-      <input type="text" name="name" required minlength="2"
-        class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" />
-      <span class="mt-1 hidden text-xs text-red-600" data-error="name">Please enter your name (min 2 characters).</span>
+    <!-- Name + Company row -->
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.nameLabel}</label>
+        <input type="text" name="name" required minlength="2"
+          class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" />
+        <span class="mt-1 hidden text-xs text-red-600" data-error="name">Please enter your name (min 2 characters).</span>
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.companyLabel}</label>
+        <input type="text" name="company"
+          class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" />
+      </div>
     </div>
 
     <!-- Email + Phone row -->
@@ -47,6 +54,20 @@ const typeMap: Record<string, string[]> = {
         <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.phoneLabel}</label>
         <input type="tel" name="phone"
           class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" placeholder="+ country code" />
+      </div>
+    </div>
+
+    <!-- Country + City row -->
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.countryLabel}</label>
+        <input type="text" name="country" autocomplete="country-name"
+          class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" />
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.cityLabel}</label>
+        <input type="text" name="city" autocomplete="address-level2"
+          class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" />
       </div>
     </div>
 
@@ -153,6 +174,14 @@ const typeMap: Record<string, string[]> = {
       <p class="mt-2 text-xs text-gray-500">{t.contact.shippingNote}</p>
     </fieldset>
 
+    <!-- Design file link -->
+    <div>
+      <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.designLinkLabel}</label>
+      <input type="url" name="designLink" placeholder={t.contact.designLinkPlaceholder}
+        class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500" />
+      <p class="mt-1 text-xs text-gray-500">{t.contact.designLinkNote}</p>
+    </div>
+
     <!-- Message -->
     <div>
       <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.messageLabel}</label>
@@ -160,7 +189,7 @@ const typeMap: Record<string, string[]> = {
         class="w-full rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-primary-500 focus:ring-primary-500"></textarea>
     </div>
 
-    <!-- reCAPTCHA notice -->
+    <!-- Spam-protection notice -->
     <p class="rounded-lg bg-gray-100 px-4 py-3 text-xs text-gray-500">{t.contact.recaptchaNotice}</p>
 
     <!-- Submit -->

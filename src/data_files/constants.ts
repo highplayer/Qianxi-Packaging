@@ -2,11 +2,11 @@ import ogImageSrc from '@images/social.png';
 
 export const SITE = {
   title: 'Qianxi Packaging',
-  tagline: 'Your Trusted Corrugated Box Manufacturer',
+  tagline: 'Custom Corrugated Boxes Manufacturer in China',
   description:
-    'Chengdu Qianxi Packaging Materials Co., Ltd. — Factory-direct custom corrugated boxes. 3-layer, 5-layer, heavy-duty, and custom printed packaging solutions with global shipping.',
+    'Chengdu Qianxi Packaging Materials Co., Ltd. — Custom corrugated box manufacturer in China. 3-ply, 5-ply and 7-ply boxes with custom sizes and printed packaging.',
   description_short:
-    'Factory-direct custom corrugated boxes from China. FSC®-certified material, free sampling, 24/7 support.',
+    'Custom corrugated boxes manufactured in Chengdu, China — 3-ply, 5-ply and 7-ply, custom sizes and printing.',
   url: 'https://qianxipack.com',
   author: 'Whereby',
 };
@@ -61,7 +61,7 @@ export const OG = {
   url: SITE.url,
   title: `${SITE.title} — Factory Direct Corrugated Box Manufacturer`,
   description:
-    'Custom corrugated boxes from Chengdu Qianxi Packaging. FSC®-certified material, free sampling, 24-hour quotation. 3-layer, 5-layer, heavy-duty, and custom printed boxes for global export.',
+    'Custom corrugated boxes from Chengdu Qianxi Packaging. 3-ply, 5-ply and 7-ply boxes with custom sizes and printing.',
   image: ogImageSrc,
 };
 

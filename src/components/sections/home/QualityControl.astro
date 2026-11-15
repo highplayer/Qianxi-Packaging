@@ -1,0 +1,66 @@
+---
+import { Image } from 'astro:assets';
+import qcPhoto from '@images/equipment/quality-lab/01.jpg';
+
+const { lang = 'en' } = Astro.props;
+interface Props { lang?: string }
+const isZh = lang === 'zh';
+
+const checks = [
+  {
+    zh: '进料检查：核对原纸与纸板克重、等级与外观。',
+    en: 'Incoming material: paper and board grammage, grade and appearance checked before production.',
+  },
+  {
+    zh: '尺寸检查：按图纸核对外尺寸、内尺寸与开槽位置。',
+    en: 'Dimensions: outer size, inner size and slot positions checked against the confirmed drawing.',
+  },
+  {
+    zh: '印刷检查：核对套印、色差、字迹清晰度与图案位置。',
+    en: 'Printing: registration, colour consistency, legibility and print position checked.',
+  },
+  {
+    zh: '粘合与成箱：检查胶线/钉距、粘接强度与箱型方正度。',
+    en: 'Gluing and stitching: glue lines, stitch pitch, bond strength and box squareness checked.',
+  },
+  {
+    zh: '压缩强度测试：使用自有智能型压缩强度试验机抽检纸箱抗压表现。',
+    en: 'Compression strength: random samples tested on our in-house intelligent compression strength tester.',
+  },
+];
+---
+
+<section class="py-20 bg-white">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="mb-4 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
+      {isZh ? '质量控制' : 'Quality Control'}
+    </h2>
+    <p class="mx-auto mb-12 max-w-3xl text-center text-gray-600">
+      {isZh
+        ? '从原纸进厂到成箱出库，我们在关键工序设置检查点，并保留抽检记录。'
+        : 'From incoming paper to finished cartons, we set checkpoints at the key process steps and keep inspection records.'}
+    </p>
+
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <div class="overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
+        <Image
+          src={qcPhoto}
+          alt={isZh ? '工厂质检实验室的智能型压缩强度试验机' : 'Intelligent compression strength tester in our QC laboratory'}
+          width={720}
+          format="avif"
+          class="mx-auto h-80 w-auto max-w-full object-contain"
+        />
+      </div>
+      <ul class="space-y-4">
+        {checks.map((item, i) => (
+          <li class="flex gap-3">
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-900 text-xs font-bold text-white">
+              {i + 1}
+            </span>
+            <span class="text-sm leading-relaxed text-gray-700">{isZh ? item.zh : item.en}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

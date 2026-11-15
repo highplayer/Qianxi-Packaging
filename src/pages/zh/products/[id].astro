@@ -94,6 +94,30 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
         <p class="text-lg leading-relaxed text-gray-600">{data.main.content}</p>
       </div>
 
+      <!-- 技术参数 -->
+      <div class="mb-8 rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
+        <h2 class="mb-5 text-xl font-bold text-primary-800" style="font-family: var(--font-heading);">
+          {t.products.detailSpecs}
+        </h2>
+        <dl class="grid gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+          {[
+            { k: t.products.specStructure, v: data.specs.structure },
+            { k: t.products.specFlute, v: data.specs.fluteType },
+            { k: t.products.specMaterial, v: data.specs.material },
+            { k: t.products.specSize, v: data.specs.sizeRange },
+            { k: t.products.specPrinting, v: data.specs.printing },
+            { k: t.products.specIndustries, v: data.specs.industries?.join(' · ') },
+          ]
+            .filter(row => Boolean(row.v))
+            .map(row => (
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{row.k}</dt>
+                <dd class="mt-1 leading-relaxed text-gray-800">{row.v}</dd>
+              </div>
+            ))}
+        </dl>
+      </div>
+
       <!-- 醒目提示：放在楞型导航之前 -->
       {pricing && (
         <div class="mb-8 rounded-xl border-2 border-amber-300 bg-amber-50 p-5">
@@ -265,6 +289,14 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
             ))}
           </ul>
         </div>
+      </div>
+
+      <!-- 定制印刷：所有箱型均可加印 -->
+      <div class="mt-8 rounded-xl border border-accent-200 bg-accent-50 p-6 sm:p-8">
+        <h3 class="mb-2 text-lg font-bold text-primary-800" style="font-family: var(--font-heading);">
+          {t.products.printingTitle}
+        </h3>
+        <p class="text-sm leading-relaxed text-gray-700">{t.products.printingDesc}</p>
       </div>
 
       <!-- CTA -->

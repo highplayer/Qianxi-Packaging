@@ -1,0 +1,79 @@
+---
+const { lang = 'en' } = Astro.props;
+interface Props { lang?: string }
+const isZh = lang === 'zh';
+
+const industries = [
+  {
+    zh: '食品与饮料',
+    en: 'Food & Beverage',
+    descZh: '适用于瓶装、罐装与盒装食品的外箱，可按承重选择三层或五层结构，并可做防潮处理。',
+    descEn: 'Outer cartons for bottled, canned and boxed food. 3-ply or 5-ply board selected by weight, with moisture-resistant options.',
+  },
+  {
+    zh: '家具',
+    en: 'Furniture',
+    descZh: '平板家具常用大规格纸箱，可加强边角与内衬，减少运输磕碰。',
+    descEn: 'Large-format cartons for flat-pack furniture, with reinforced corners and inner protection to reduce transit damage.',
+  },
+  {
+    zh: '电子产品',
+    en: 'Electronics',
+    descZh: '尺寸精度要求高，可配套模切内衬与外箱，印刷清晰便于识别。',
+    descEn: 'Tight dimensional tolerances, with die-cut inserts and outer cartons, plus clear printing for identification.',
+  },
+  {
+    zh: '家用电器',
+    en: 'Home Appliances',
+    descZh: '较重产品建议五层或七层结构，可按托盘尺寸设计，便于整柜出运。',
+    descEn: 'Heavier goods usually call for 5-ply or 7-ply board, designed around pallet dimensions for container loading.',
+  },
+  {
+    zh: '纺织与服装',
+    en: 'Textile & Garment',
+    descZh: '以三层为主，可做零售包装用印刷，箱型与尺寸按折叠方式定制。',
+    descEn: 'Mostly 3-ply, with printed cartons for retail use and dimensions matched to folding requirements.',
+  },
+  {
+    zh: '工业与机械',
+    en: 'Industrial & Machinery',
+    descZh: '重型设备与零部件可用七层重型纸箱，配合加强边角、打包带与托盘。',
+    descEn: 'Heavy equipment and components can use 7-ply heavy-duty board with reinforced edges, strapping and pallets.',
+  },
+  {
+    zh: '日用化工',
+    en: 'Daily Chemical',
+    descZh: '印刷要求较细，可做防潮处理，适合瓶装与盒装日化产品的外包装。',
+    descEn: 'Cleaner print requirements and moisture-resistant treatment for bottled and boxed household products.',
+  },
+];
+---
+
+<section class="py-20">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="mb-4 text-center text-3xl font-extrabold text-primary-900" style="font-family: var(--font-heading);">
+      {isZh ? '适用行业' : 'Industries We Serve'}
+    </h2>
+    <p class="mx-auto mb-3 max-w-3xl text-center text-gray-600">
+      {isZh
+        ? '以下是我们各类纸箱适用的行业场景，可按产品重量、尺寸与运输方式选择结构与材质。'
+        : 'The industries below are application areas our box types suit. Structures and paper grades are selected by product weight, size and transport method.'}
+    </p>
+    <p class="mx-auto mb-12 max-w-3xl text-center text-xs text-gray-400">
+      {isZh
+        ? '说明：这是适用场景说明，不代表我们已服务这些行业的海外客户。'
+        : 'Note: these are application areas only — not a list of existing overseas customers.'}
+    </p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {industries.map(item => (
+        <div class="rounded-xl border border-gray-200 border-t-4 border-t-accent-500 bg-white p-6 shadow-sm">
+          <h3 class="mb-2 text-lg font-bold text-primary-800" style="font-family: var(--font-heading);">
+            {isZh ? item.zh : item.en}
+          </h3>
+          <p class="text-sm leading-relaxed text-gray-600">{isZh ? item.descZh : item.descEn}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

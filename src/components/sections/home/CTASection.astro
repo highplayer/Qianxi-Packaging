@@ -22,7 +22,11 @@ const quoteUrl = `${base}${prefix}/quote`;
         {t.home.ctaButton} →
       </button>
     </form>
-    <p class="mt-4 text-xs text-gray-400">Protected by reCAPTCHA. We respect your privacy.</p>
+    <p class="mt-4 text-xs text-gray-400">
+      {lang === 'zh'
+        ? '我们仅使用您提交的信息回复您的询价。'
+        : 'We only use your details to reply to your enquiry.'}
+    </p>
   </div>
 </section>
 

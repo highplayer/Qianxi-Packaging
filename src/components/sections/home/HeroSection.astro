@@ -19,10 +19,16 @@ const prefix = lang === 'zh' ? '/zh' : '';
     <h1 class="mb-4 text-4xl font-extrabold leading-tight md:text-5xl" style="font-family: var(--font-heading);">
       {t.home.heroTitle}
     </h1>
-    <p class="mb-8 text-lg text-gray-300">{t.home.heroSubtitle}</p>
-    <a href={`${base}${prefix}/quote`} class="inline-block rounded-lg bg-accent-600 px-8 py-3 text-lg font-semibold text-white transition hover:bg-accent-700">
-      {t.home.heroCTA} →
-    </a>
+    <p class="mb-4 text-lg text-gray-200">{t.home.heroSubtitle}</p>
+    <p class="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-gray-300">{t.home.heroIntro}</p>
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href={`${base}${prefix}/quote`} class="inline-block rounded-lg bg-accent-600 px-8 py-3 text-lg font-semibold text-white transition hover:bg-accent-700">
+        {t.home.heroCTA} →
+      </a>
+      <a href={`${base}${prefix}/products`} class="inline-block rounded-lg border border-white/50 px-8 py-3 text-lg font-semibold text-white transition hover:bg-white/10">
+        {t.home.heroCTA2}
+      </a>
+    </div>
   </div>
 </section>
 
