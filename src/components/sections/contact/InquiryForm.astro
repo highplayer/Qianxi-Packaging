@@ -30,10 +30,12 @@ const presetMap: Record<string, Preset[]> = {
     <input type="hidden" name="access_key" value="ef70c770-efca-4155-a58e-eaae6d4b23a6" />
     <input type="hidden" name="subject" value="网站询盘 / New website inquiry" />
     <input type="hidden" name="from_name" value="Qianxi Packaging Website" />
-    <!-- Honeypot: Web3Forms' own botcheck field, hidden from humans -->
-    <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-      <input type="text" name="botcheck" tabindex="-1" autocomplete="off" />
-    </div>
+    <!--
+      Web3Forms honeypot. Per their docs this MUST be an unchecked checkbox:
+      a text input gets auto-filled by browsers / password managers, which makes
+      Web3Forms treat a genuine enquiry as a bot and route it to Spam.
+    -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off" />
     <!-- Name + Company row -->
     <div class="grid gap-4 sm:grid-cols-2">
       <div>
