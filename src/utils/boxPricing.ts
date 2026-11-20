@@ -153,3 +153,14 @@ export function pricePerPiece(args: PriceArgs): number {
 export function formatPrice(value: number, currency: string): string {
   return `${currency} ${value.toFixed(2)}`;
 }
+
+/**
+ * Prices are modelled in EUR. Convert to the display currency.
+ * `eurPerUsd` is how many EUR one USD buys (e.g. 0.93), so USD = EUR ÷ eurPerUsd.
+ */
+export function convertCurrency(amountEur: number, currency: string, eurPerUsd: number): number {
+  if (currency.toUpperCase() === 'USD') {
+    return eurPerUsd > 0 ? amountEur / eurPerUsd : amountEur;
+  }
+  return amountEur;
+}

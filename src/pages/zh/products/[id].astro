@@ -2,7 +2,7 @@
 import MainLayout from '@/layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 import { getTranslations } from '@/i18n/utils';
-import { pricePerPiece, formatPrice, type PricingParams, type PricingMode, type ModeConfig } from '@utils/boxPricing';
+import { pricePerPiece, formatPrice, convertCurrency, type PricingParams, type PricingMode, type ModeConfig } from '@utils/boxPricing';
 import materials from '@data/pricing/materials.json';
 import pricing3Layer from '@data/pricing/3-layer.json';
 import pricing5Layer from '@data/pricing/5-layer.json';
@@ -143,17 +143,26 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
         </div>
       )}
 
-      <!-- 报价方式切换 -->
+      <!-- 报价方式 + 显示货币切换 -->
       {pricing && pricing.types.length > 0 && (
-        <div class="mb-6 flex flex-wrap items-center gap-3">
-          <span class="text-sm font-semibold text-gray-600">{t.products.modeLabel}</span>
-          <div class="inline-flex overflow-hidden rounded-lg border border-gray-300">
-            <button type="button" data-mode-btn="delivered" class="mode-btn px-4 py-2 text-sm font-semibold transition bg-accent-600 text-white">
-              {t.products.modeDelivered}
-            </button>
-            <button type="button" data-mode-btn="exw" class="mode-btn px-4 py-2 text-sm font-semibold transition bg-white text-gray-700 hover:bg-gray-50">
-              {t.products.modeExw}
-            </button>
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-sm font-semibold text-gray-600">{t.products.modeLabel}</span>
+            <div class="inline-flex overflow-hidden rounded-lg border border-gray-300">
+              <button type="button" data-mode-btn="delivered" class="mode-btn px-4 py-2 text-sm font-semibold transition bg-accent-600 text-white">
+                {t.products.modeDelivered}
+              </button>
+              <button type="button" data-mode-btn="exw" class="mode-btn px-4 py-2 text-sm font-semibold transition bg-white text-gray-700 hover:bg-gray-50">
+                {t.products.modeExw}
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-sm font-semibold text-gray-600">{t.products.currencyLabel}</span>
+            <div class="inline-flex overflow-hidden rounded-lg border border-gray-300">
+              <button type="button" data-currency-btn="EUR" class="currency-btn px-4 py-2 text-sm font-semibold transition bg-accent-600 text-white">EUR</button>
+              <button type="button" data-currency-btn="USD" class="currency-btn px-4 py-2 text-sm font-semibold transition bg-white text-gray-700 hover:bg-gray-50">USD</button>
+            </div>
           </div>
         </div>
       )}
@@ -323,7 +332,7 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
 })} />
 
 <script>
-  import { pricePerPiece, formatPrice } from '@utils/boxPricing';
+  import { pricePerPiece, formatPrice, convertCurrency } from '@utils/boxPricing';
 
   const dataEl = document.getElementById('pricing-data');
   const root = document.getElementById('pricing-root');
@@ -331,6 +340,7 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
     const data = JSON.parse(dataEl.textContent || '{}');
     const lang: string = data.lang || 'zh';
     let mode: string = data.defaultMode || 'delivered';
+    let currency: string = data.currency || 'EUR';
     let linerId: string = data.defaultMaterial?.liner ?? data.presets[0]?.liner ?? data.materials.liners[0].id;
     let mediumId: string = data.defaultMaterial?.medium ?? data.presets[0]?.medium ?? data.materials.mediums[0].id;
 
@@ -341,6 +351,7 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
     const errorEl = document.getElementById('material-error');
     const triggers = Array.from(root.querySelectorAll<HTMLButtonElement>('.material-trigger'));
     const modeBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.mode-btn'));
+    const currencyBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('.currency-btn'));
 
     const nameOf = (item: any) => (lang === 'zh' ? item.zh : item.en);
     const linerOf = (id: string) => data.materials.liners.find((l: any) => l.id === id);
@@ -388,7 +399,7 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
               mode: mode as any,
               params: data.params,
             });
-            td.textContent = formatPrice(value, data.currency);
+            td.textContent = formatPrice(convertCurrency(value, currency, data.params.eurPerUsd), currency);
           });
         });
       });
@@ -399,6 +410,14 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
 
       modeBtns.forEach(btn => {
         const active = btn.dataset.modeBtn === mode;
+        btn.classList.toggle('bg-accent-600', active);
+        btn.classList.toggle('text-white', active);
+        btn.classList.toggle('bg-white', !active);
+        btn.classList.toggle('text-gray-700', !active);
+      });
+
+      currencyBtns.forEach(btn => {
+        const active = (btn.dataset.currencyBtn || 'EUR') === currency;
         btn.classList.toggle('bg-accent-600', active);
         btn.classList.toggle('text-white', active);
         btn.classList.toggle('bg-white', !active);
@@ -417,6 +436,7 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
       if (cta) {
         const url = new URL(cta.href);
         url.searchParams.set('shipping', mode === 'exw' ? 'own-forwarder' : 'need');
+        url.searchParams.set('currency', currency);
         cta.href = url.toString();
       }
     }
@@ -482,6 +502,13 @@ const priceFor = (typeCode: string, dims: number[], qty: number, mode: PricingMo
     modeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         mode = btn.dataset.modeBtn || 'delivered';
+        render();
+      });
+    });
+
+    currencyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currency = btn.dataset.currencyBtn || 'EUR';
         render();
       });
     });

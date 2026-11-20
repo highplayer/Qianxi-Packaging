@@ -88,6 +88,7 @@ export interface SiteTranslations {
     tableNoticeExw: string;
     areaNotice: string;
     modeLabel: string;
+    currencyLabel: string;
     modeDelivered: string;
     modeExw: string;
     tableMaterial: string;
@@ -162,6 +163,8 @@ export interface SiteTranslations {
     budgetLabel: string;
     budgetPlaceholder: string;
     shippingLabel: string;
+    currencyLabel: string;
+    currencyNote: string;
     shippingNeed: string;
     shippingOwnForwarder: string;
     shippingNote: string;

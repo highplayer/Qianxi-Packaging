@@ -188,6 +188,16 @@ const presetMap: Record<string, Preset[]> = {
       <p class="mt-2 text-xs text-gray-500">{t.contact.shippingNote}</p>
     </fieldset>
 
+    <!-- Preferred currency -->
+    <fieldset>
+      <legend class="mb-2 text-xs font-semibold text-gray-700">{t.contact.currencyLabel}</legend>
+      <div class="flex flex-wrap gap-4">
+        <label class="flex items-center gap-2 text-sm"><input type="radio" name="currency" value="EUR" checked class="text-accent-600 focus:ring-accent-500" /> EUR (€)</label>
+        <label class="flex items-center gap-2 text-sm"><input type="radio" name="currency" value="USD" class="text-accent-600 focus:ring-accent-500" /> USD ($)</label>
+      </div>
+      <p class="mt-2 text-xs text-gray-500">{t.contact.currencyNote}</p>
+    </fieldset>
+
     <!-- Design file link -->
     <div>
       <label class="mb-1 block text-sm font-semibold text-gray-700">{t.contact.designLinkLabel}</label>
@@ -287,6 +297,13 @@ const presetMap: Record<string, Preset[]> = {
   const shippingParam = urlParams.get('shipping');
   if (shippingParam) {
     const radio = form.querySelector<HTMLInputElement>(`input[name="shipping"][value="${shippingParam}"]`);
+    if (radio) radio.checked = true;
+  }
+
+  // Arriving from a product page viewed in USD: preselect that currency
+  const currencyParam = urlParams.get('currency');
+  if (currencyParam) {
+    const radio = form.querySelector<HTMLInputElement>(`input[name="currency"][value="${currencyParam.toUpperCase()}"]`);
     if (radio) radio.checked = true;
   }
 
